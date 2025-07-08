@@ -53,9 +53,10 @@ class NavigatorRow extends StatelessWidget {
         CustomIconButton(
           iconData: Icons.arrow_forward,
           onPressed: () {
-            if (currentIndex == 2) {
+
+            if(currentIndex == 2){
               Navigator.pushReplacementNamed(context, AppRoute.homeRouteName);
-            } else {
+            }else{
               pageController.nextPage(
                 duration: Duration(milliseconds: 300),
                 curve: Curves.easeIn,

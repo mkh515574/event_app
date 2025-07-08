@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/providers/app_language_provider.dart';
+import 'core/services/shared_prefs.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/app_route.dart';
 import 'features/home/view/home_screen.dart';
@@ -7,32 +11,49 @@ import 'features/onBoarding/view/on_boarding_personalize.dart';
 import 'features/onBoarding/view/on_boarding_screen.dart';
 import 'l10n/app_localizations.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final hasSeenOnBoarding =
+      prefs.getBool(SharedPrefsKeys.onBoardingCompleted) ?? false;
+  final language = await getLanguage();
+  final themeMode = await getThemeMode();
+
+  final appLanguageProvider = AppLanguageProvider();
+  await appLanguageProvider.init(language: language, themeMode: themeMode);
+
+  runApp(
+    ChangeNotifierProvider.value(
+      value: appLanguageProvider,
+      child: MyApp(showOnBoarding: !hasSeenOnBoarding),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool showOnBoarding;
 
-  // This widget is the root of your application.
+  const MyApp({super.key, required this.showOnBoarding});
+
   @override
   Widget build(BuildContext context) {
+    final appLanguageProvider = Provider.of<AppLanguageProvider>(context);
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: appLanguageProvider.themeMode,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-
-      initialRoute: AppRoute.onBoardingPersonalizeRouteName,
-
+      locale: appLanguageProvider.locale,
+      initialRoute:  AppRoute.onBoardingPersonalizeRouteName,
       routes: {
         AppRoute.homeRouteName: (context) => const HomeScreen(),
-        AppRoute.onBoardingRouteName: (context) => OnBoardingScreen(),
+        AppRoute.onBoardingRouteName: (context) => const OnBoardingScreen(),
         AppRoute.onBoardingPersonalizeRouteName: (context) =>
-            OnBoardingPersonalize(),
+        const OnBoardingPersonalize(),
       },
     );
   }

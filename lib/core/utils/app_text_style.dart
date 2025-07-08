@@ -25,4 +25,9 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.w500,
     color: AppColors.blackColor,
   );
+  static final TextStyle medium16White= GoogleFonts.inter(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.whiteColor,
+  );
 }

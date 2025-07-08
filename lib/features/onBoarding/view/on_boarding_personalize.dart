@@ -4,8 +4,13 @@ import 'package:event_app/core/utils/app_route.dart';
 import 'package:event_app/core/utils/app_text_style.dart';
 import 'package:event_app/core/utils/widgets/custom_button.dart';
 import 'package:event_app/features/onBoarding/view/widgets/custom_toggle_icon.dart';
+import 'package:event_app/features/onBoarding/view/widgets/toggle_switch.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/providers/app_language_provider.dart';
+import '../../../l10n/app_localizations.dart';
 
 class OnBoardingPersonalize extends StatefulWidget {
   const OnBoardingPersonalize({super.key});
@@ -15,14 +20,16 @@ class OnBoardingPersonalize extends StatefulWidget {
 }
 
 class _OnBoardingPersonalizeState extends State<OnBoardingPersonalize> {
-  bool themeMode = true;
-
-  bool languageMode = true;
-
   @override
   Widget build(BuildContext context) {
+    var appLocalizations = AppLocalizations.of(context)!;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var appLanguageProvider = Provider.of<AppLanguageProvider>(context);
+    var appThemeMode = appLanguageProvider.themeMode;
+    bool isEnglish = appLanguageProvider.locale.languageCode == 'en';
+    bool isLight = appLanguageProvider.themeMode == ThemeMode.light;
+
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(AppAssets.logoOnBoardingHead),
@@ -42,113 +49,75 @@ class _OnBoardingPersonalizeState extends State<OnBoardingPersonalize> {
             SizedBox(height: height * 0.03),
 
             Text(
-              "Personalize Your Experience",
+              appLocalizations.personalize,
               style: AppTextStyle.bold20primaryLight,
             ),
             SizedBox(height: height * 0.03),
             Text(
-              "Choose your preferred theme and language to get started with a comfortable, tailored experience that suits your style.",
-              style: AppTextStyle.medium16Black,
+              appLocalizations.description,
+              style: appThemeMode == ThemeMode.light
+                  ? AppTextStyle.medium16Black
+                  : AppTextStyle.medium16Black.copyWith(
+                      color: AppColors.whiteColor,
+                    ),
             ),
             SizedBox(height: height * 0.03),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Language", style: AppTextStyle.medium20primaryLight),
-
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteColor,
-                    border: Border.all(
-                      width: 3,
-                      color: AppColors.primaryLightColor,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            languageMode = !languageMode;
-                          });
-                        },
-                        child: CustomToggleIcon(
-                          imagePath: AppAssets.enLogo,
-                          isSelected: languageMode,
-                        ),
-                      ),
-                      SizedBox(width: width * 0.04),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            languageMode = !languageMode;
-                          });
-                        },
-                        child: CustomToggleIcon(
-                          imagePath: AppAssets.egLogo,
-                          isSelected: !languageMode,
-                        ),
-                      ),
-                    ],
-                  ),
+                Text(
+                  appLocalizations.language,
+                  style: AppTextStyle.medium20primaryLight,
                 ),
+                ToggleSwitch(
+                  themeMode: appLanguageProvider.themeMode,
+                  isSelected: isEnglish,
+                  imagePathLeft: AppAssets.enLogo,
+                  imagePathRight: AppAssets.egLogo,
+                  onTapLeft: () {
+                    if (!isEnglish) appLanguageProvider.changeLanguage("en");
+                  },
+                  onTapRight: () {
+                    if (isEnglish) appLanguageProvider.changeLanguage("ar");
+                  },
+                ),
+
               ],
             ),
             SizedBox(height: height * 0.03),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Theme", style: AppTextStyle.medium20primaryLight),
+                Text(
+                  appLocalizations.theme,
+                  style: AppTextStyle.medium20primaryLight,
+                ),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteColor,
-                    border: Border.all(
-                      width: 3,
-                      color: AppColors.primaryLightColor,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            themeMode = !themeMode;
-                          });
-                        },
-                        child: CustomToggleIcon(
-                          imagePath: themeMode
-                              ? AppAssets.sunLogo
-                              : AppAssets.sunDarkLogo,
-                          isSelected: themeMode,
-                        ),
-                      ),
-                      SizedBox(width: width * 0.04),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            themeMode = !themeMode;
-                          });
-                        },
-                        child: CustomToggleIcon(
-                          imagePath: themeMode
-                              ? AppAssets.moonLogo
-                              : AppAssets.moonLightLogo,
-                          isSelected: !themeMode,
-                        ),
-                      ),
-                    ],
-                  ),
+                ToggleSwitch(
+                  themeMode: appLanguageProvider.themeMode,
+                  onTapLeft: () {
+                    if (!isLight) {
+                      appLanguageProvider.setThemeMode(ThemeMode.light);
+                    }
+                  },
+                  onTapRight: () {
+                    if (isLight) {
+                      appLanguageProvider.setThemeMode(ThemeMode.dark);
+                    }
+                  },
+                  isSelected: isLight,
+                  imagePathLeft: isLight
+                      ? AppAssets.sunLogo
+                      : AppAssets.sunDarkLogo,
+                  imagePathRight: isLight
+                      ? AppAssets.moonLogo
+                      : AppAssets.moonLightLogo,
                 ),
               ],
             ),
             SizedBox(height: height * 0.03),
             CustomButton(
-              title: "Let’s Start",
+              title: appLocalizations.btn_start,
               onPressed: () {
                 // todo : Navigate to OnBoarding Screen
                 Navigator.pushReplacementNamed(

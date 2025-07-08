@@ -4,6 +4,7 @@ import 'package:event_app/features/onBoarding/view/widgets/page_view_item_builde
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_assets.dart';
+import '../../../l10n/app_localizations.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -17,31 +18,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   final PageController _pageController = PageController();
 
-  final List<Map<String, String>> onBoardingData = [
-    {
-      "image": AppAssets.hotTrending,
-      "title": "Find Events That Inspire You",
-      "desc":
-          "Dive into a world of events crafted to fit your unique interests. Whether you're into live music, art workshops, professional networking, or simply discovering new experiences, we have something for everyone. Our curated recommendations will help you explore, connect, and make the most of every opportunity around you.",
-    },
-    {
-      "image": AppAssets.beingCreative2,
-      "title": "Learn & Grow",
-      "desc":
-          "Take the hassle out of organizing events with our all-in-one planning tools. From setting up invites and managing RSVPs to scheduling reminders and coordinating details, we’ve got you covered. Plan with ease and focus on what matters – creating an unforgettable experience for you and your guests.",
-    },
-    {
-      "image": AppAssets.socialMedia,
-      "title": "Stay Connected",
-      "desc":
-          "Make every event memorable by sharing the experience with others. Our platform lets you invite friends, keep everyone in the loop, and celebrate moments together. Capture and share the excitement with your network, so you can relive the highlights and cherish the memories.",
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var appLocalizations = AppLocalizations.of(context)!;
+    final List<Map<String, String>> onBoardingData = [
+      {
+        "image": AppAssets.hotTrending,
+        "title": appLocalizations.find_event,
+        "desc": appLocalizations.find_event_desc,
+      },
+      {
+        "image": AppAssets.beingCreative2,
+        "title": appLocalizations.effortless_event,
+        "desc": appLocalizations.effortless_event_desc,
+      },
+      {
+        "image": AppAssets.socialMedia,
+        "title": appLocalizations.share_event,
+        "desc": appLocalizations.share_event_desc,
+      },
+    ];
 
     return Scaffold(
       appBar: AppBar(
