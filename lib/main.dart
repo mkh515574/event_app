@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'core/utils/app_ theme.dart';
+import 'core/utils/app_theme.dart';
 import 'core/utils/app_route.dart';
 import 'features/home/view/home_screen.dart';
-import 'features/onBoarding/on_boarding_personalize.dart';
-import 'features/onBoarding/on_boarding_screen.dart';
+import 'features/onBoarding/view/on_boarding_personalize.dart';
+import 'features/onBoarding/view/on_boarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
       routes: {
 
         AppRoute.homeRouteName: (context) => const HomeScreen(),
-        AppRoute.onBoardingRouteName: (context) => const OnBoardingScreen(),
-        AppRoute.onBoardingPersonalizeRouteName: (context) => const OnBoardingPersonalize(),
+        AppRoute.onBoardingRouteName: (context) =>  OnBoardingScreen(),
+        AppRoute.onBoardingPersonalizeRouteName: (context) =>  OnBoardingPersonalize(),
       },
 
     );
