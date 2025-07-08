@@ -1,2 +1,8 @@
 {
+
+"personalize":"Personalize Your Experience",
+"description":"Choose your preferred theme and language to start a comfortable experience tailored to your style.",
+"language" : "Language",
+"theme" : "Theme",
+"btn_start":"Let’s Start"
 }
