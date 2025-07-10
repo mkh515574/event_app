@@ -34,6 +34,7 @@ class ToggleSwitch extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
             onTap: onTapLeft,

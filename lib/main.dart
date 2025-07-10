@@ -1,3 +1,5 @@
+import 'package:event_app/features/auth/login/login_screen.dart';
+import 'package:event_app/features/auth/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +8,7 @@ import 'core/providers/app_language_provider.dart';
 import 'core/services/shared_prefs.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/app_route.dart';
+import 'features/auth/forget password/forgot_password_screen.dart';
 import 'features/home/view/home_screen.dart';
 import 'features/onBoarding/view/on_boarding_personalize.dart';
 import 'features/onBoarding/view/on_boarding_screen.dart';
@@ -47,14 +50,18 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: appLanguageProvider.locale,
-      initialRoute: showOnBoarding
-          ? AppRoute.onBoardingPersonalizeRouteName
-          : AppRoute.homeRouteName,
+      initialRoute: AppRoute.loginRouteName,
+
+      // initialRoute: showOnBoarding
+      //     ? AppRoute.onBoardingPersonalizeRouteName
+      //     : AppRoute.homeRouteName,
       routes: {
         AppRoute.homeRouteName: (context) => const HomeScreen(),
         AppRoute.onBoardingRouteName: (context) => const OnBoardingScreen(),
-        AppRoute.onBoardingPersonalizeRouteName: (context) =>
-            const OnBoardingPersonalize(),
+        AppRoute.onBoardingPersonalizeRouteName: (context) => const OnBoardingPersonalize(),
+        AppRoute.loginRouteName: (context) =>  LoginScreen(),
+        AppRoute.registerRouteName: (context) =>  RegisterScreen(),
+        AppRoute.forgotPasswordRouteName: (context) =>  ForgotPasswordScreen(),
       },
     );
   }

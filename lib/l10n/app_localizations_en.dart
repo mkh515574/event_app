@@ -36,6 +36,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout => 'Logout';
 
   @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get forgot_password => 'Forgot Password?';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get dont_have_account => 'Don\'t have an account?';
+
+  @override
+  String get create_account => 'Create Account';
+
+  @override
+  String get or => 'OR';
+
+  @override
+  String get confrim_password => 'Confirm Password';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get password_does_not_match => 'Password does not match';
+
+  @override
+  String get already_have_account => 'Already have an account?';
+
+  @override
+  String get please_enter_your_password => 'Please enter your password';
+
+  @override
+  String get password_must_be_at_least_6_characters => 'Password must be at least 6 characters';
+
+  @override
+  String get password_must_contain_at_least_one_uppercase_letter => 'Password must contain at least one uppercase letter';
+
+  @override
+  String get password_must_contain_at_least_one_lowercase_letter => 'Password must contain at least one lowercase letter';
+
+  @override
+  String get password_must_contain_at_least_one_number => 'Password must contain at least one number';
+
+  @override
+  String get password_must_contain_at_least_one_special_character => 'Password must contain at least one special character';
+
+  @override
+  String get please_enter_your_email => 'Please enter your email';
+
+  @override
+  String get please_enter_a_valid_email => 'Please enter a valid email';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get please_enter_your_name => 'Please enter your name';
+
+  @override
+  String get google => 'Login with Google';
+
+  @override
   String get btn_start => 'Let’s Start';
 
   @override

@@ -1,15 +1,24 @@
+import 'package:event_app/core/utils/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.backgroundDarkColor,
+      elevation: 0,
+      iconTheme: IconThemeData(color: AppColors.blackColor),
+      titleTextStyle: AppTextStyle.medium16Black,
+    ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.primaryLightColor,
       shape: StadiumBorder(
         side: BorderSide(color: AppColors.whiteColor, width: 3.0),
       ),
     ),
+    cardColor: AppColors.greyColor,
+    canvasColor: AppColors.whiteColor,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
       selectedItemColor: AppColors.whiteColor,
@@ -17,18 +26,46 @@ class AppTheme {
       backgroundColor: AppColors.primaryLightColor,
     ),
     scaffoldBackgroundColor: AppColors.backgroundLightColor,
-    appBarTheme: AppBarTheme(backgroundColor: AppColors.backgroundLightColor),
+
     colorSchemeSeed: AppColors.primaryLightColor,
+    textTheme: TextTheme(
+      titleMedium: AppTextStyle.medium16Black,
+      bodyMedium: AppTextStyle.medium16Black.copyWith(
+        color: AppColors.greyColor,
+      ),
+      bodySmall: AppTextStyle.medium16Black
+
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: AppColors.primaryLightColor, width: 1),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+
+        textStyle: AppTextStyle.medium22White,
+        backgroundColor: Colors.transparent,
+      ),
+    ),
 
     useMaterial3: true,
   );
   static ThemeData darkTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.backgroundDarkColor,
+      elevation: 0,
+      iconTheme: IconThemeData(color: AppColors.whiteColor),
+      titleTextStyle: AppTextStyle.medium16White,
+    ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.backgroundDarkColor,
+
       shape: StadiumBorder(
         side: BorderSide(color: AppColors.whiteColor, width: 3.0),
       ),
     ),
+    cardColor: AppColors.whiteColor,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 0,
       type: BottomNavigationBarType.fixed,
@@ -37,8 +74,28 @@ class AppTheme {
       backgroundColor: AppColors.backgroundDarkColor,
     ),
     scaffoldBackgroundColor: AppColors.backgroundDarkColor,
-    appBarTheme: AppBarTheme(backgroundColor: AppColors.backgroundDarkColor),
+    textTheme: TextTheme(
+      bodyMedium: AppTextStyle.medium16Black.copyWith(
+        color: AppColors.whiteColor,
+      ),
+      titleMedium: AppTextStyle.medium16White,
+        bodySmall: AppTextStyle.medium16White
+    ),
+
+    canvasColor: AppColors.backgroundDarkColor,
     colorSchemeSeed: AppColors.primaryDarkColor,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: AppColors.primaryLightColor, width: 1),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+
+        textStyle: AppTextStyle.medium22White,
+        backgroundColor: Colors.transparent,
+      ),
+    ),
 
     useMaterial3: true,
   );

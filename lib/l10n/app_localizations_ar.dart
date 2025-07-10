@@ -36,6 +36,72 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logout => 'تسجيل الخروج';
 
   @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get forgot_password => 'هل نسيت كلمة المرور ؟';
+
+  @override
+  String get login => 'تسجيل الدخول';
+
+  @override
+  String get dont_have_account => 'ليس لديك حساب؟';
+
+  @override
+  String get create_account => 'إنشاء حساب';
+
+  @override
+  String get or => 'أو';
+
+  @override
+  String get confrim_password => 'تأكيد كلمة المرور';
+
+  @override
+  String get name => 'الاسم';
+
+  @override
+  String get password_does_not_match => 'كلمة المرور غير متطابقة';
+
+  @override
+  String get already_have_account => 'هل لديك حساب بالفعل؟';
+
+  @override
+  String get please_enter_your_password => 'الرجاء إدخال كلمة المرور الخاصة بك';
+
+  @override
+  String get password_must_be_at_least_6_characters => 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل';
+
+  @override
+  String get password_must_contain_at_least_one_uppercase_letter => 'يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل';
+
+  @override
+  String get password_must_contain_at_least_one_lowercase_letter => 'يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل';
+
+  @override
+  String get password_must_contain_at_least_one_number => 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
+
+  @override
+  String get password_must_contain_at_least_one_special_character => 'يجب أن تحتوي كلمة المرور على حرف خاص واحد على الأقل';
+
+  @override
+  String get please_enter_your_email => 'الرجاء إدخال بريدك الإلكتروني';
+
+  @override
+  String get please_enter_a_valid_email => 'الرجاء إدخال بريد إلكتروني صالح';
+
+  @override
+  String get register => 'إنشاء حساب';
+
+  @override
+  String get please_enter_your_name => 'الرجاء إدخال اسمك';
+
+  @override
+  String get google => 'تسجيل الدخول بوسطة جوجل';
+
+  @override
   String get btn_start => 'لنبدأ';
 
   @override

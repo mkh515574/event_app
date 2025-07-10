@@ -149,6 +149,138 @@ abstract class AppLocalizations {
   /// **'Logout'**
   String get logout;
 
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @forgot_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgot_password;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @dont_have_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dont_have_account;
+
+  /// No description provided for @create_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get create_account;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get or;
+
+  /// No description provided for @confrim_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confrim_password;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @password_does_not_match.
+  ///
+  /// In en, this message translates to:
+  /// **'Password does not match'**
+  String get password_does_not_match;
+
+  /// No description provided for @already_have_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get already_have_account;
+
+  /// No description provided for @please_enter_your_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get please_enter_your_password;
+
+  /// No description provided for @password_must_be_at_least_6_characters.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get password_must_be_at_least_6_characters;
+
+  /// No description provided for @password_must_contain_at_least_one_uppercase_letter.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one uppercase letter'**
+  String get password_must_contain_at_least_one_uppercase_letter;
+
+  /// No description provided for @password_must_contain_at_least_one_lowercase_letter.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one lowercase letter'**
+  String get password_must_contain_at_least_one_lowercase_letter;
+
+  /// No description provided for @password_must_contain_at_least_one_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one number'**
+  String get password_must_contain_at_least_one_number;
+
+  /// No description provided for @password_must_contain_at_least_one_special_character.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one special character'**
+  String get password_must_contain_at_least_one_special_character;
+
+  /// No description provided for @please_enter_your_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get please_enter_your_email;
+
+  /// No description provided for @please_enter_a_valid_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get please_enter_a_valid_email;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @please_enter_your_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get please_enter_your_name;
+
+  /// No description provided for @google.
+  ///
+  /// In en, this message translates to:
+  /// **'Login with Google'**
+  String get google;
+
   /// No description provided for @btn_start.
   ///
   /// In en, this message translates to:

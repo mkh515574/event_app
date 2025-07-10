@@ -86,7 +86,7 @@ class _ProfileTapState extends State<ProfileTap> {
             onPressed: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                AppRoute.onBoardingPersonalizeRouteName,
+                AppRoute.loginRouteName,
                 (route) => false,
               );
             },
