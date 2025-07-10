@@ -11,4 +11,5 @@ abstract class AppAssets {
   static const String beingCreative2 = "assets/images/being-creative_2.png";
   static const String socialMedia = "assets/images/social-media.png";
 
+  static const String profileImage ="assets/images/Rectangle 76.png";
 }

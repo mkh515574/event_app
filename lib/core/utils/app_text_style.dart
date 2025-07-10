@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +9,22 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.bold,
     color: AppColors.primaryLightColor,
   );
-  static final TextStyle medium220White = GoogleFonts.inter(
+  static final TextStyle bold20Black = GoogleFonts.inter(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: AppColors.blackColor,
+  );
+  static final TextStyle bold24White = GoogleFonts.inter(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: AppColors.whiteColor,
+  );
+  static final TextStyle bold20White = GoogleFonts.inter(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: AppColors.whiteColor,
+  );
+  static final TextStyle medium22White = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.w500,
     color: AppColors.whiteColor,
@@ -25,7 +39,7 @@ abstract class AppTextStyle {
     fontWeight: FontWeight.w500,
     color: AppColors.blackColor,
   );
-  static final TextStyle medium16White= GoogleFonts.inter(
+  static final TextStyle medium16White = GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: AppColors.whiteColor,

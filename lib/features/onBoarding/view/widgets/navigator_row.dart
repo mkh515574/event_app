@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:event_app/core/utils/app_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/services/shared_prefs.dart';
 import '../../../../core/utils/app_colors.dart';
 import 'custom_icon_button.dart';
 
@@ -52,11 +53,11 @@ class NavigatorRow extends StatelessWidget {
 
         CustomIconButton(
           iconData: Icons.arrow_forward,
-          onPressed: () {
-
-            if(currentIndex == 2){
+          onPressed: () async {
+            if (currentIndex == 2) {
+              await completeOnBoarding();
               Navigator.pushReplacementNamed(context, AppRoute.homeRouteName);
-            }else{
+            } else {
               pageController.nextPage(
                 duration: Duration(milliseconds: 300),
                 curve: Curves.easeIn,

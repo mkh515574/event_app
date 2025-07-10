@@ -23,8 +23,8 @@ void main() async {
   await appLanguageProvider.init(language: language, themeMode: themeMode);
 
   runApp(
-    ChangeNotifierProvider.value(
-      value: appLanguageProvider,
+    ChangeNotifierProvider(
+      create: (context) => appLanguageProvider,
       child: MyApp(showOnBoarding: !hasSeenOnBoarding),
     ),
   );
@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
     final appLanguageProvider = Provider.of<AppLanguageProvider>(context);
 
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: appLanguageProvider.themeMode,
@@ -48,12 +47,14 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: appLanguageProvider.locale,
-      initialRoute:  AppRoute.onBoardingPersonalizeRouteName,
+      initialRoute: showOnBoarding
+          ? AppRoute.onBoardingPersonalizeRouteName
+          : AppRoute.homeRouteName,
       routes: {
         AppRoute.homeRouteName: (context) => const HomeScreen(),
         AppRoute.onBoardingRouteName: (context) => const OnBoardingScreen(),
         AppRoute.onBoardingPersonalizeRouteName: (context) =>
-        const OnBoardingPersonalize(),
+            const OnBoardingPersonalize(),
       },
     );
   }

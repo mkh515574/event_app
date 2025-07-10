@@ -3,7 +3,7 @@ import 'package:event_app/core/utils/app_colors.dart';
 import 'package:event_app/core/utils/app_route.dart';
 import 'package:event_app/core/utils/app_text_style.dart';
 import 'package:event_app/core/utils/widgets/custom_button.dart';
-import 'package:event_app/features/onBoarding/view/widgets/custom_toggle_icon.dart';
+
 import 'package:event_app/features/onBoarding/view/widgets/toggle_switch.dart';
 
 import 'package:flutter/material.dart';
