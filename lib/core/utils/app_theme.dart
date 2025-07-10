@@ -33,8 +33,7 @@ class AppTheme {
       bodyMedium: AppTextStyle.medium16Black.copyWith(
         color: AppColors.greyColor,
       ),
-      bodySmall: AppTextStyle.medium16Black
-
+      bodySmall: AppTextStyle.medium16Black,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -79,7 +78,7 @@ class AppTheme {
         color: AppColors.whiteColor,
       ),
       titleMedium: AppTextStyle.medium16White,
-        bodySmall: AppTextStyle.medium16White
+      bodySmall: AppTextStyle.medium16White,
     ),
 
     canvasColor: AppColors.backgroundDarkColor,

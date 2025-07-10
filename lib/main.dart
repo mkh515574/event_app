@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: appLanguageProvider.locale,
-      initialRoute: AppRoute.loginRouteName,
+
 
       // initialRoute: showOnBoarding
       //     ? AppRoute.onBoardingPersonalizeRouteName
