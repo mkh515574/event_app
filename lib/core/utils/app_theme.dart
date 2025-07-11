@@ -19,15 +19,9 @@ class AppTheme {
     ),
     cardColor: AppColors.greyColor,
     canvasColor: AppColors.whiteColor,
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: AppColors.whiteColor,
-      unselectedItemColor: AppColors.whiteColor,
-      backgroundColor: AppColors.primaryLightColor,
-    ),
     scaffoldBackgroundColor: AppColors.backgroundLightColor,
 
-    colorSchemeSeed: AppColors.primaryLightColor,
+    primaryColor: AppColors.primaryLightColor,
     textTheme: TextTheme(
       titleMedium: AppTextStyle.medium16Black,
       bodyMedium: AppTextStyle.medium16Black.copyWith(
@@ -48,6 +42,7 @@ class AppTheme {
       ),
     ),
 
+
     useMaterial3: true,
   );
   static ThemeData darkTheme = ThemeData(
@@ -65,13 +60,7 @@ class AppTheme {
       ),
     ),
     cardColor: AppColors.whiteColor,
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      elevation: 0,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: AppColors.whiteColor,
-      unselectedItemColor: AppColors.whiteColor,
-      backgroundColor: AppColors.backgroundDarkColor,
-    ),
+
     scaffoldBackgroundColor: AppColors.backgroundDarkColor,
     textTheme: TextTheme(
       bodyMedium: AppTextStyle.medium16Black.copyWith(
@@ -82,7 +71,7 @@ class AppTheme {
     ),
 
     canvasColor: AppColors.backgroundDarkColor,
-    colorSchemeSeed: AppColors.primaryDarkColor,
+    primaryColor: AppColors.backgroundDarkColor,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -95,6 +84,7 @@ class AppTheme {
         backgroundColor: Colors.transparent,
       ),
     ),
+
 
     useMaterial3: true,
   );

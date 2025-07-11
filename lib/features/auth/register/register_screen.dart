@@ -14,7 +14,7 @@ import '../../../core/utils/widgets/custom_text_form_filed.dart';
 import '../../../l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({super.key});
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -139,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           return appLocalizations.please_enter_your_password;
                         }
                         if (value.length < 6) {
-                          return appLocalizations.password_must_be_at_least_6_characters;;
+                          return appLocalizations.password_must_be_at_least_6_characters;
                         }
 
                         if (value !=passwordController.text) {

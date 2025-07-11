@@ -15,10 +15,13 @@ class CustomTextFormFiled extends StatelessWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final Function()? onSuffixPressed;
+  final Color? enabledColor;
+  final bool  hintTextStyle;
 
   const CustomTextFormFiled({
     super.key,
     this.hintText,
+    this.enabledColor= AppColors.greyColor,
     this.labelText,
     this.helperText,
     this.errorText,
@@ -28,7 +31,7 @@ class CustomTextFormFiled extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.prefixIcon,
     this.suffixIcon,
-    this.onSuffixPressed,
+    this.onSuffixPressed, this.hintTextStyle = false,
   });
 
   @override
@@ -42,12 +45,14 @@ class CustomTextFormFiled extends StatelessWidget {
       cursorColor: AppColors.primaryLightColor,
 
       decoration: InputDecoration(
-        enabledBorder: outlineInputBorder(color: AppColors.greyColor),
+        enabledBorder: outlineInputBorder(color: enabledColor!),
         focusedBorder: outlineInputBorder(color: AppColors.primaryLightColor),
         errorBorder: outlineInputBorder(color: AppColors.redColor),
         focusedErrorBorder: outlineInputBorder(color: AppColors.redColor),
         hintText: hintText,
-        hintStyle: Theme.of(context).textTheme.bodyMedium,
+        hintStyle: hintTextStyle? Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: enabledColor,
+        ) : Theme.of(context).textTheme.bodyMedium ,
         labelStyle: Theme.of(context).textTheme.bodyMedium,
         helperStyle: Theme.of(context).textTheme.bodyMedium,
         errorStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -61,7 +66,7 @@ class CustomTextFormFiled extends StatelessWidget {
         errorText: errorText,
 
 
-        prefixIcon: Icon(prefixIcon),
+        prefixIcon: Icon(prefixIcon, color: enabledColor),
         suffixIconColor: Theme.of(context).cardColor,
         suffixIcon: IconButton(
           icon: Icon(suffixIcon),

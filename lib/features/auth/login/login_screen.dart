@@ -14,7 +14,7 @@ import '../../../core/utils/widgets/custom_text_form_filed.dart';
 import '../../../l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

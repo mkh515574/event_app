@@ -51,17 +51,17 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: appLanguageProvider.locale,
 
-
-      // initialRoute: showOnBoarding
-      //     ? AppRoute.onBoardingPersonalizeRouteName
-      //     : AppRoute.homeRouteName,
+      initialRoute: showOnBoarding
+          ? AppRoute.onBoardingPersonalizeRouteName
+          : AppRoute.homeRouteName,
       routes: {
-        AppRoute.homeRouteName: (context) => const HomeScreen(),
+        AppRoute.homeRouteName: (context) => HomeScreen(),
         AppRoute.onBoardingRouteName: (context) => const OnBoardingScreen(),
-        AppRoute.onBoardingPersonalizeRouteName: (context) => const OnBoardingPersonalize(),
-        AppRoute.loginRouteName: (context) =>  LoginScreen(),
-        AppRoute.registerRouteName: (context) =>  RegisterScreen(),
-        AppRoute.forgotPasswordRouteName: (context) =>  ForgotPasswordScreen(),
+        AppRoute.onBoardingPersonalizeRouteName: (context) =>
+            const OnBoardingPersonalize(),
+        AppRoute.loginRouteName: (context) => LoginScreen(),
+        AppRoute.registerRouteName: (context) => RegisterScreen(),
+        AppRoute.forgotPasswordRouteName: (context) => ForgotPasswordScreen(),
       },
     );
   }

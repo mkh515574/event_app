@@ -20,8 +20,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+
     return ElevatedButton(
       style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
         backgroundColor: MaterialStateProperty.all(backgroundColor),

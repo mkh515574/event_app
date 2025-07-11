@@ -22,6 +22,9 @@ class AppLanguageProvider extends ChangeNotifier {
     saveThemeMode(mode);
     notifyListeners();
   }
+  bool isDark() {
+    return _themeMode == ThemeMode.dark;
+  }
 
   Future<void> init({required String language, required ThemeMode themeMode}) async {
     _locale = Locale(language);
