@@ -9,6 +9,7 @@ import 'core/services/shared_prefs.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/app_route.dart';
 import 'features/auth/forget password/forgot_password_screen.dart';
+import 'features/create_event/create_event_screen.dart';
 import 'features/home/view/home_screen.dart';
 import 'features/onBoarding/view/on_boarding_personalize.dart';
 import 'features/onBoarding/view/on_boarding_screen.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         AppRoute.loginRouteName: (context) => LoginScreen(),
         AppRoute.registerRouteName: (context) => RegisterScreen(),
         AppRoute.forgotPasswordRouteName: (context) => ForgotPasswordScreen(),
+        AppRoute.createEventRouteName: (context) => CreateEventScreen(),
       },
     );
   }

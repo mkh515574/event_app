@@ -10,6 +10,7 @@ class CustomTextFormFiled extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
+  final int? maxLines;
 
   final TextInputType? keyboardType;
   final IconData? prefixIcon;
@@ -19,8 +20,10 @@ class CustomTextFormFiled extends StatelessWidget {
   final bool  hintTextStyle;
 
   const CustomTextFormFiled({
+
     super.key,
     this.hintText,
+    this.maxLines= 1,
     this.enabledColor= AppColors.greyColor,
     this.labelText,
     this.helperText,
@@ -43,6 +46,7 @@ class CustomTextFormFiled extends StatelessWidget {
       obscureText: obscureText,
       style: Theme.of(context).textTheme.bodySmall,
       cursorColor: AppColors.primaryLightColor,
+      maxLines: maxLines,
 
       decoration: InputDecoration(
         enabledBorder: outlineInputBorder(color: enabledColor!),
@@ -66,13 +70,13 @@ class CustomTextFormFiled extends StatelessWidget {
         errorText: errorText,
 
 
-        prefixIcon: Icon(prefixIcon, color: enabledColor),
+        prefixIcon:prefixIcon == null ? null : Icon(prefixIcon, color: enabledColor),
         suffixIconColor: Theme.of(context).cardColor,
         suffixIcon: IconButton(
           icon: Icon(suffixIcon),
           onPressed: onSuffixPressed,
         ),
-        //contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+
       ),
     );
   }

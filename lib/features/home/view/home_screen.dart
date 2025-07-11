@@ -1,3 +1,4 @@
+import 'package:event_app/core/utils/app_route.dart';
 import 'package:event_app/core/utils/app_text_style.dart';
 
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: AppColors.whiteColor, size: 40),
         onPressed: () {
-          // your logic here
+          Navigator.pushNamed(context, AppRoute.createEventRouteName);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

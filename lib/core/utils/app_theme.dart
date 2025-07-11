@@ -6,7 +6,7 @@ import 'app_colors.dart';
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     appBarTheme: AppBarTheme(
-      backgroundColor: AppColors.backgroundDarkColor,
+      backgroundColor: AppColors.backgroundLightColor,
       elevation: 0,
       iconTheme: IconThemeData(color: AppColors.blackColor),
       titleTextStyle: AppTextStyle.medium16Black,

@@ -1,4 +1,3 @@
-import 'package:event_app/core/utils/list_of_events.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +33,7 @@ class _EventViewItemState extends State<EventViewItem> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: themeMode ? AppColors.primaryLightColor : AppColors.whiteColor.withOpacity(0.5),
+          color: themeMode ? AppColors.primaryLightColor : AppColors.whiteColor.withValues(alpha: 0.5),
           width: 2,
         ),
         borderRadius: BorderRadius.circular(16),

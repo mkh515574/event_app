@@ -4,7 +4,7 @@ class EventAssets {
   static String getImage(String category, bool isDark) {
     switch (category) {
       case 'Birthday':
-        return isDark ? AppAssets.holidayEventDark : AppAssets.holidayEventLight;
+        return isDark ? AppAssets.birthdayEventDark : AppAssets.birthdayEventLight;
       case 'Meeting':
         return isDark ? AppAssets.meetingEventDark : AppAssets.meetingEventLight;
         case 'Sports':

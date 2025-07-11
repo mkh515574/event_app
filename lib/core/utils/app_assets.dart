@@ -25,25 +25,27 @@ abstract class AppAssets {
   static const String mapFillIcon = "assets/images/map_fill.svg";
   static const String favoriteFillIcon = "assets/images/favorite_fill.svg";
   static const String profileFillIcon = "assets/images/profile_fill.svg";
+  static const String vector = "assets/images/Vector.svg";
 
   // Event images
   static const String sportsEventLight = "assets/images/sport_light.png";
-  static const String gamingEventLight = "assets/images/gaming-event-light.png";
+  static const String gamingEventLight = "assets/images/gaming_light.png";
   static const String workShopLight = "assets/images/workshop_light.png";
   static const String meetingEventLight = "assets/images/meeting_light.png";
   static const String holidayEventLight = "assets/images/holiday_light.png";
   static const String birthdayEventLight = "assets/images/birthday_light.png";
-  static const String eatingEventLight = "assets/images/sport_dark.png";
-  static const String bookClubEventLight = "assets/images/gaming-event-dark.png";
-  static const String exhibitionEventLight = "assets/images/gaming-event-dark.png";
+  static const String eatingEventLight = "assets/images/eating_light.png";
+  static const String bookClubEventLight = "assets/images/bookclub_light.png";
+  static const String exhibitionEventLight = "assets/images/exhibition_light.png";
   static const String sportsEventDark = "assets/images/sport_dark.png";
-  static const String gamingEventDark = "assets/images/gaming-event-dark.png";
+  static const String gamingEventDark = "assets/images/gaming_dark.png";
   static const String workShopDark = "assets/images/workshop_dark.png";
   static const String meetingEventDark = "assets/images/meeting_dark.png";
   static const String holidayEventDark = "assets/images/holiday_dark.png";
   static const String birthdayEventDark = "assets/images/birthday_dark.png";
-  static const String eatingEventDark = "assets/images/sport_light.png";
-  static const String bookClubEventDark = "assets/images/gaming-event-light.png";
-  static const String exhibitionEventDark = "assets/images/gaming-event-light.png";
+  static const String eatingEventDark = "assets/images/eating_dark.png";
+  static const String bookClubEventDark = "assets/images/bookclub_dark.png";
+  static const String exhibitionEventDark = "assets/images/exhibition_dark.png";
+
 
 }
