@@ -200,7 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 
               ToggleSwitch(
-                themeMode: appLanguageProvider.themeMode,
+
                 isSelected: isEnglish,
                 imagePathLeft: AppAssets.enLogo,
                 imagePathRight: AppAssets.egLogo,

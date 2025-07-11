@@ -1,5 +1,5 @@
 import 'package:event_app/core/utils/app_assets.dart';
-import 'package:event_app/core/utils/app_colors.dart';
+
 import 'package:event_app/core/utils/app_route.dart';
 import 'package:event_app/core/utils/app_text_style.dart';
 import 'package:event_app/core/utils/widgets/custom_button.dart';
@@ -26,9 +26,10 @@ class _OnBoardingPersonalizeState extends State<OnBoardingPersonalize> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var appLanguageProvider = Provider.of<AppLanguageProvider>(context);
-    var appThemeMode = appLanguageProvider.themeMode;
+
     bool isEnglish = appLanguageProvider.locale.languageCode == 'en';
-    bool isLight = appLanguageProvider.themeMode == ThemeMode.light;
+   // bool isLight = appLanguageProvider.themeMode == ThemeMode.light;
+    bool isLight = !appLanguageProvider.isDark();
 
     return Scaffold(
       appBar: AppBar(
@@ -55,11 +56,7 @@ class _OnBoardingPersonalizeState extends State<OnBoardingPersonalize> {
             SizedBox(height: height * 0.03),
             Text(
               appLocalizations.description,
-              style: appThemeMode == ThemeMode.light
-                  ? AppTextStyle.medium16Black
-                  : AppTextStyle.medium16Black.copyWith(
-                      color: AppColors.whiteColor,
-                    ),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
             SizedBox(height: height * 0.03),
             Row(
@@ -70,7 +67,7 @@ class _OnBoardingPersonalizeState extends State<OnBoardingPersonalize> {
                   style: AppTextStyle.medium20primaryLight,
                 ),
                 ToggleSwitch(
-                  themeMode: appLanguageProvider.themeMode,
+
                   isSelected: isEnglish,
                   imagePathLeft: AppAssets.enLogo,
                   imagePathRight: AppAssets.egLogo,
@@ -94,7 +91,7 @@ class _OnBoardingPersonalizeState extends State<OnBoardingPersonalize> {
                 ),
 
                 ToggleSwitch(
-                  themeMode: appLanguageProvider.themeMode,
+
                   onTapLeft: () {
                     if (!isLight) {
                       appLanguageProvider.setThemeMode(ThemeMode.light);

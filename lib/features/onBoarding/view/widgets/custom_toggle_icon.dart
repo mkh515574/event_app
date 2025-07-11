@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 
-import '../../../../core/providers/app_language_provider.dart';
 import '../../../../core/utils/app_colors.dart';
 
 
@@ -18,10 +16,10 @@ class CustomToggleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var themeMode = Provider.of<AppLanguageProvider>(context).themeMode;
+
     return Container(
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.primaryLightColor : themeMode == ThemeMode.light ? AppColors.whiteColor : AppColors.backgroundDarkColor,
+        color: isSelected ? AppColors.primaryLightColor : Theme.of(context).scaffoldBackgroundColor,
         shape: BoxShape.circle,
         border: isSelected
             ? Border.all(

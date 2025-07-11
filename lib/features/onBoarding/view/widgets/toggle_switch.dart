@@ -9,7 +9,7 @@ class ToggleSwitch extends StatelessWidget {
   final bool isSelected;
   final String imagePathLeft;
   final String imagePathRight;
-  final ThemeMode themeMode;
+
   final double spacing;
 
   const ToggleSwitch({
@@ -19,7 +19,7 @@ class ToggleSwitch extends StatelessWidget {
     required this.imagePathLeft,
     required this.imagePathRight,
     required this.isSelected,
-    required this.themeMode,
+
     this.spacing = 12.0,
   });
 
@@ -27,9 +27,7 @@ class ToggleSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: themeMode == ThemeMode.light
-            ? AppColors.whiteColor
-            : AppColors.backgroundDarkColor,
+        color:Theme.of(context).scaffoldBackgroundColor,
         border: Border.all(width: 3, color: AppColors.primaryLightColor),
         borderRadius: BorderRadius.circular(30),
       ),

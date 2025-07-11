@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: height * 0.02),
                 ToggleSwitch(
-                  themeMode: appLanguageProvider.themeMode,
+
                   isSelected: isEnglish,
                   imagePathLeft: AppAssets.enLogo,
                   imagePathRight: AppAssets.egLogo,

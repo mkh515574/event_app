@@ -28,6 +28,7 @@ class AppTheme {
         color: AppColors.greyColor,
       ),
       bodySmall: AppTextStyle.medium16Black,
+      headlineLarge: AppTextStyle.medium16Black,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -60,7 +61,6 @@ class AppTheme {
       ),
     ),
     cardColor: AppColors.whiteColor,
-
     scaffoldBackgroundColor: AppColors.backgroundDarkColor,
     textTheme: TextTheme(
       bodyMedium: AppTextStyle.medium16Black.copyWith(
@@ -68,6 +68,7 @@ class AppTheme {
       ),
       titleMedium: AppTextStyle.medium16White,
       bodySmall: AppTextStyle.medium16White,
+      headlineLarge: AppTextStyle.medium16White,
     ),
 
     canvasColor: AppColors.backgroundDarkColor,
