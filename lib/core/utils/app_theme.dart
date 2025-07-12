@@ -18,10 +18,19 @@ class AppTheme {
       ),
     ),
     cardColor: AppColors.greyColor,
+    dividerColor: AppColors.primaryLightColor,
     canvasColor: AppColors.whiteColor,
     scaffoldBackgroundColor: AppColors.backgroundLightColor,
-
     primaryColor: AppColors.primaryLightColor,
+    hintColor: AppColors.whiteColor,
+
+    colorScheme: ColorScheme.light(
+      primary: AppColors.primaryLightColor,
+      secondary: AppColors.whiteColor,
+      secondaryContainer: Colors.white,
+      onSecondaryContainer: AppColors.primaryLightColor,
+      onPrimary: Colors.white,
+    ),
     textTheme: TextTheme(
       titleMedium: AppTextStyle.medium16Black,
       bodyMedium: AppTextStyle.medium16Black.copyWith(
@@ -62,6 +71,18 @@ class AppTheme {
     ),
     cardColor: AppColors.whiteColor,
     scaffoldBackgroundColor: AppColors.backgroundDarkColor,
+    canvasColor: AppColors.backgroundDarkColor,
+    primaryColor: AppColors.backgroundDarkColor,
+    dividerColor: AppColors.whiteColor,
+    hintColor: AppColors.primaryLightColor,
+    colorScheme: ColorScheme.dark(
+      primary: AppColors.backgroundDarkColor,
+      secondary: AppColors.backgroundDarkColor,
+      secondaryContainer: AppColors.primaryLightColor,
+      onSecondaryContainer: Colors.white,
+      onPrimary: AppColors.primaryLightColor,
+    ),
+
     textTheme: TextTheme(
       bodyMedium: AppTextStyle.medium16Black.copyWith(
         color: AppColors.whiteColor,
@@ -71,8 +92,7 @@ class AppTheme {
       headlineLarge: AppTextStyle.medium16White,
     ),
 
-    canvasColor: AppColors.backgroundDarkColor,
-    primaryColor: AppColors.backgroundDarkColor,
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(

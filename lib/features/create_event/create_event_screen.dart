@@ -57,6 +57,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
+    bool isDark = appLanguageProvider.isDark();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -99,6 +100,18 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         });
                       },
                       child: TapViewItem(
+                        borderColor: selectedIndex == index
+                            ? isDark ? AppColors.backgroundDarkColor: AppColors.primaryLightColor
+                            :AppColors.primaryLightColor ,
+                        iconColor: selectedIndex == index
+                            ? (isDark ? AppColors.backgroundDarkColor: AppColors.backgroundLightColor)
+                            : (isDark ?AppColors.primaryLightColor: AppColors
+                    .primaryLightColor),
+                        textColor: selectedIndex == index
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSecondaryContainer,
+                        backgroundColor:selectedIndex == index? AppColors.primaryLightColor
+                            : (isDark? AppColors.backgroundDarkColor:AppColors.whiteColor) ,
                         label: categories[index].keys.first,
                         icon: categories[index].values.first,
                         isSelected: selectedIndex == index,
@@ -174,7 +187,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         color: AppColors.primaryLightColor,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      child: SvgPicture.asset(AppAssets.mapIcon),
+                      child: SvgPicture.asset(AppAssets.vector),
                     ),
                     SizedBox(width: width * 0.02),
                     Text(
