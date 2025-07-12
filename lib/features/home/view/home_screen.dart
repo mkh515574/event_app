@@ -1,5 +1,6 @@
 import 'package:event_app/core/utils/app_route.dart';
 import 'package:event_app/core/utils/app_text_style.dart';
+import 'package:event_app/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
@@ -25,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
+    final appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       body: pages[_selectedIndex],
       floatingActionButton: FloatingActionButton(
@@ -48,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? AppAssets.profileFillIcon
                 : AppAssets.profileIcon,
           ];
-          final labelList = ['Home', 'Map', 'Favorites', 'Profile'];
+          final labelList = [appLocalizations.home, appLocalizations.map, appLocalizations.favorites, appLocalizations.profile];
 
           return Column(
             mainAxisSize: MainAxisSize.min,

@@ -3,28 +3,30 @@ import 'package:event_app/core/utils/app_assets.dart';
 import 'package:event_app/core/utils/app_colors.dart';
 import 'package:event_app/core/utils/widgets/custom_button.dart';
 import 'package:event_app/core/utils/widgets/custom_text_form_filed.dart';
-import 'package:event_app/features/create_event/widgets/date_or_time_view_item.dart';
+import 'package:event_app/features/events/create_event/widgets/date_or_time_view_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/providers/app_language_provider.dart';
-import '../../core/utils/app_text_style.dart';
-import '../../core/utils/events_assets.dart';
-import '../home/view/widgets/tap_view_item.dart';
+import '../../../core/providers/app_language_provider.dart';
+import '../../../core/utils/app_text_style.dart';
+import '../../../core/utils/events_assets.dart';
+import '../../home/view/widgets/tap_view_item.dart';
+import '../../../l10n/app_localizations.dart';
 
-class CreateEventScreen extends StatefulWidget {
-  const CreateEventScreen({super.key});
+class EditEventScreen extends StatefulWidget {
+  const EditEventScreen({super.key});
 
   @override
-  State<CreateEventScreen> createState() => _CreateEventScreenState();
+  State<EditEventScreen> createState() => _EditEventScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
+class _EditEventScreenState extends State<EditEventScreen> {
   int selectedIndex = 0;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final List<Map<String, IconData>> categories = [
     {'Sports': Icons.directions_bike},
@@ -37,6 +39,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     {'Book Club': Icons.book},
     {'Exhibition': Icons.museum},
   ];
+
+
+ 
+
 
   String formattedDate = '';
   String formattedTime = '';
@@ -56,13 +62,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-
     bool isDark = appLanguageProvider.isDark();
+    final appLocalizations = AppLocalizations.of(context)!;
+
     return Scaffold(
+    
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text("Create Event", style: AppTextStyle.bold20primaryLight),
+        title: Text(appLocalizations.edit_event, style: AppTextStyle.bold20primaryLight),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -107,9 +115,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             ? (isDark ? AppColors.backgroundDarkColor: AppColors.backgroundLightColor)
                             : (isDark ?AppColors.primaryLightColor: AppColors
                     .primaryLightColor),
-                        textColor: selectedIndex == index
-                            ? Theme.of(context).colorScheme.onPrimary
-                            : Theme.of(context).colorScheme.onSecondaryContainer,
+                       
                         backgroundColor:selectedIndex == index? AppColors.primaryLightColor
                             : (isDark? AppColors.backgroundDarkColor:AppColors.whiteColor) ,
                         label: categories[index].keys.first,
@@ -124,11 +130,22 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ),
 
               SizedBox(height: height * 0.02),
-              Text("Title", style: Theme.of(context).textTheme.bodyMedium),
+       
+              Form(
+                key: formKey,
+                child: Column(
+                children: [
+                     Text("Title", style: Theme.of(context).textTheme.bodyMedium),
               SizedBox(height: height * 0.01),
               CustomTextFormFiled(
                 controller: titleController,
                 prefixIcon: Icons.edit_note_outlined,
+                validator: (value){
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter event title';
+                  }
+                  return null;
+                },
                 hintText: "Event Title",
               ),
               SizedBox(height: height * 0.01),
@@ -140,8 +157,15 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               CustomTextFormFiled(
                 controller: descriptionController,
                 maxLines: 4,
+                validator: (value){
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter event description';
+                  }
+                  return null;
+                },
                 hintText: "Event Description",
               ),
+              ],),),
               SizedBox(height: height * 0.02),
               DateOrTimeViewItem(
                 label: formattedDate.isEmpty ? "Choose Date" : formattedDate,
@@ -174,7 +198,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               SizedBox(height: height * 0.01),
 
               CustomButton(
-                onPressed: ()  {},
+                onPressed: ()  {
+              // todo: Implement location selection
+
+                },
                 hasIcons: true,
                 widget: Row(
                   children: [
@@ -206,7 +233,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 backgroundColor: Theme.of(context).canvasColor,
               ),
               SizedBox(height: height * 0.02),
-              CustomButton(onPressed: () {}, title: "Add Event"),
+              CustomButton(onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Event Edited Successfully')),
+                  );
+                }
+              }, title: "Update Event"),
               SizedBox(height: height * 0.03),
             ],
           ),

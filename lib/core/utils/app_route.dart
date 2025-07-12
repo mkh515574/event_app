@@ -7,5 +7,6 @@ class AppRoute{
   static const String forgotPasswordRouteName = "ForgotPasswordScreen";
   static const String createEventRouteName = "CreateEventScreen";
   static const String eventDetailsRouteName = "EventDetailsScreen";
+  static const String editEventRouteName = "editEventScreen";
 
 }

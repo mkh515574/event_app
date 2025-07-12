@@ -9,7 +9,9 @@ import 'core/services/shared_prefs.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/app_route.dart';
 import 'features/auth/forget password/forgot_password_screen.dart';
-import 'features/create_event/create_event_screen.dart';
+import 'features/events/create_event/create_event_screen.dart';
+import 'features/events/edit_event/edit_event_screen.dart';
+import 'features/events/event_details/event_details_screen.dart';
 import 'features/home/view/home_screen.dart';
 import 'features/onBoarding/view/on_boarding_personalize.dart';
 import 'features/onBoarding/view/on_boarding_screen.dart';
@@ -64,6 +66,9 @@ class MyApp extends StatelessWidget {
         AppRoute.registerRouteName: (context) => RegisterScreen(),
         AppRoute.forgotPasswordRouteName: (context) => ForgotPasswordScreen(),
         AppRoute.createEventRouteName: (context) => CreateEventScreen(),
+        AppRoute.eventDetailsRouteName: (context) => EventDetailsScreen(),
+      
+        AppRoute.editEventRouteName: (context) => EditEventScreen(),
       },
     );
   }

@@ -69,6 +69,57 @@ class AppLocalizationsAr extends AppLocalizations {
   String get already_have_account => 'هل لديك حساب بالفعل؟';
 
   @override
+  String get sports => 'الرياضة';
+
+  @override
+  String get gaming => 'الألعاب';
+
+  @override
+  String get work_shop => 'ورشة عمل';
+
+  @override
+  String get meeting => 'اجتماع';
+
+  @override
+  String get holiday => 'عطلة';
+
+  @override
+  String get birthday => 'عيد ميلاد';
+
+  @override
+  String get eating => 'تناول الطعام';
+
+  @override
+  String get book_club => 'نادي الكتاب';
+
+  @override
+  String get exhibition => 'معرض';
+
+  @override
+  String get home => 'الصفحة الرئيسية';
+
+  @override
+  String get map => 'الخريطة';
+
+  @override
+  String get favorites => 'المفضلة';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get edit_profile => 'تعديل الملف الشخصي';
+
+  @override
+  String get edit_event => 'تعديل الحدث';
+
+  @override
+  String get create_event => 'إنشاء حدث';
+
+  @override
+  String get event_details => 'تفاصيل الحدث';
+
+  @override
   String get please_enter_your_password => 'الرجاء إدخال كلمة المرور الخاصة بك';
 
   @override

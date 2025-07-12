@@ -1,4 +1,5 @@
 import 'package:event_app/core/utils/app_assets.dart';
+import 'package:event_app/l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/providers/app_language_provider.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_route.dart';
 import '../../../../../core/utils/app_text_style.dart';
 import '../../../../../core/utils/list_of_events.dart';
 import '../../../../../core/utils/widgets/event_view_item.dart';
@@ -23,29 +25,33 @@ class HomeTap extends StatefulWidget {
 
 class _HomeTapState extends State<HomeTap> {
   int selectedIndex = 0;
+  
 
-  final List<Map<String, IconData>> categories = [
-    {'All': Icons.all_out_sharp},
-    {'Sports': Icons.directions_bike},
-    {'Gaming': Icons.videogame_asset},
-    {'WorkShop': Icons.build},
-    {'Meeting': Icons.meeting_room},
-    {'Holiday': Icons.beach_access},
-    {'Birthday': Icons.cake},
-    {'Eating': Icons.restaurant},
-    {'Book Club': Icons.book},
-    {'Exhibition': Icons.museum},
-  ];
+
+
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+     var appLocalizations = AppLocalizations.of(context)!;
 
     final appLanguageProvider = Provider.of<AppLanguageProvider>(context, listen: false);
     final currentLocale = appLanguageProvider.locale;
     final currentMode = appLanguageProvider.themeMode;
     var themeMode =appLanguageProvider.isDark();
+      final List<Map<String, IconData>> categories = [
+    {'All': Icons.all_out_sharp},
+    {appLocalizations.sports: Icons.directions_bike},
+    {appLocalizations.gaming: Icons.videogame_asset},
+    {appLocalizations.work_shop: Icons.build},
+    {appLocalizations.meeting: Icons.meeting_room},
+    {appLocalizations.holiday: Icons.beach_access},
+    {appLocalizations.birthday: Icons.cake},
+    {appLocalizations.eating: Icons.restaurant},
+    {appLocalizations.book_club: Icons.book},
+    {appLocalizations.exhibition: Icons.museum},
+  ];
 
 
     return Column(
@@ -175,7 +181,16 @@ class _HomeTapState extends State<HomeTap> {
             padding: EdgeInsets.zero,
             itemBuilder: (context, index) => Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-              child: EventViewItem(model: ListOfEvents.events[index]),
+              child: GestureDetector(
+                child: EventViewItem(model: ListOfEvents.events[index]),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoute.eventDetailsRouteName,
+                    arguments: ListOfEvents.events[index],
+                  );
+                },
+              ),
             ),
             separatorBuilder: (context, index) =>
                 SizedBox(height: height * 0.02),

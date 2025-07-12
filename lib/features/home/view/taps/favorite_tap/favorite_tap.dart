@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_route.dart';
 import '../../../../../core/utils/list_of_events.dart';
 import '../../../../../core/utils/widgets/custom_text_form_filed.dart';
 import '../../../../../core/utils/widgets/event_view_item.dart';
@@ -37,8 +38,18 @@ class FavoriteTap extends StatelessWidget {
             Expanded(
               child: Expanded(
                 child: ListView.separated(
-                  itemBuilder: (context, index) =>
-                      EventViewItem(model: favoriteEvents[index]),
+                  itemBuilder: (context, index) =>GestureDetector(
+                    child: EventViewItem(model: favoriteEvents[index]),
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoute.eventDetailsRouteName,
+                      
+                      );
+                    },
+                    
+                  ),
+                    
                   separatorBuilder: (context, index) =>
                       SizedBox(height: size.height * 0.02),
                   itemCount: favoriteEvents.length,
