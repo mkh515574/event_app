@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_app/core/utils/firebase_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -24,12 +25,16 @@ class HomeProvider extends ChangeNotifier {
       {local.exhibition: Icons.museum},
     ];
   }
+  var auth = FirebaseAuth.instance.currentUser;
+
+
 
   int selectedIndex = 0;
   void getAllEvents() async {
 
+
         await FireBaseUtils.getEventsCollection()
-            .orderBy("date", descending: true)
+            .orderBy("date", descending: true).where("userId" ,isEqualTo: auth!.uid )
             .snapshots().listen((querySnapshot) {
           events = querySnapshot.docs.map((doc) => doc.data()).toList();
           favoriteEvents = events;
@@ -41,7 +46,7 @@ class HomeProvider extends ChangeNotifier {
   void getFelteredEvents(String category) async {
     QuerySnapshot<EventModel> querySnapshot =
         await FireBaseUtils.getEventsCollection()
-            .where("category_name", isEqualTo: category)
+            .where("category_name", isEqualTo: category).where("userId" ,isEqualTo: auth!.uid )
             .get();
     favoriteEvents = querySnapshot.docs.map((e) {
       return e.data();
@@ -60,13 +65,11 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteFieldFromDocument({
-    required String eventId,
-    required String fieldName,
-  }) async {
-    await FireBaseUtils.getEventsCollection().doc(eventId).delete();
-    notifyListeners();
-  }
+void deleteEvent(String eventId,context){
+    FireBaseUtils.deleteEvent(eventId).then((val){
+      Navigator.pop(context);
+    });
+}
 
   void setSelectedIndex(int index, BuildContext context) {
     selectedIndex = index;

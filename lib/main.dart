@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:event_app/features/auth/controller/auth_controller.dart';
 import 'package:event_app/features/auth/login/login_screen.dart';
 import 'package:event_app/features/auth/register/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,6 +48,8 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => HomeProvider(),
         ),
+        ChangeNotifierProvider(create: (context) => AuthController())
+
       ],
       child: MyApp(showOnBoarding: !hasSeenOnBoarding),
     ),

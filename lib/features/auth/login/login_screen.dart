@@ -12,6 +12,7 @@ import '../../../core/utils/app_route.dart';
 import '../../../core/utils/widgets/custom_button.dart';
 import '../../../core/utils/widgets/custom_text_form_filed.dart';
 import '../../../l10n/app_localizations.dart';
+import '../controller/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,9 +24,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController emailController = TextEditingController(text: "charlesgdawe@examplepetstore.com");
+  final TextEditingController emailController = TextEditingController(
 
-  final TextEditingController passwordController = TextEditingController(text: "Kh@123456");
+  );
+
+  final TextEditingController passwordController = TextEditingController(
+
+  );
 
   bool isPasswordVisible = true;
 
@@ -35,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var width = MediaQuery.of(context).size.width;
     var appLocalizations = AppLocalizations.of(context)!;
     var appLanguageProvider = Provider.of<AppLanguageProvider>(context);
+    var authController = Provider.of<AuthController>(context);
 
     bool isEnglish = appLanguageProvider.locale.languageCode == 'en';
 
@@ -104,7 +110,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, AppRoute.forgotPasswordRouteName);
+                            Navigator.pushNamed(
+                              context,
+                              AppRoute.forgotPasswordRouteName,
+                            );
                           },
                           child: Text(
                             appLocalizations.forgot_password,
@@ -120,11 +129,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: appLocalizations.login,
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              AppRoute.homeRouteName,
-                            );
-                            setState(() {});
+                           authController.login(emailAddress: emailController.text, password: passwordController.text).then((val){
+                             Navigator.pushReplacementNamed(
+                               context,
+                               AppRoute.homeRouteName,
+                             );
+                           });
                           }
                         },
                       ),
@@ -142,7 +152,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, AppRoute.registerRouteName);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoute.registerRouteName,
+                        );
                       },
                       child: Text(
                         appLocalizations.create_account,
@@ -165,7 +178,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         thickness: 1,
                       ),
                     ),
-                    Text(appLocalizations.or, style: AppTextStyle.bold20primaryLight),
+                    Text(
+                      appLocalizations.or,
+                      style: AppTextStyle.bold20primaryLight,
+                    ),
                     Expanded(
                       child: Divider(
                         color: AppColors.primaryLightColor,
@@ -195,7 +211,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: height * 0.02),
                 ToggleSwitch(
-
                   isSelected: isEnglish,
                   imagePathLeft: AppAssets.enLogo,
                   imagePathRight: AppAssets.egLogo,
@@ -214,27 +229,36 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   String? validatePassword(String? value) {
     if (value!.isEmpty) {
       return AppLocalizations.of(context)!.please_enter_your_password;
     }
     if (value.length < 6) {
-      return AppLocalizations.of(context)!.password_must_be_at_least_6_characters;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_be_at_least_6_characters;
     }
     if (!value.contains(RegExp(r'[A-Z]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_uppercase_letter;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_uppercase_letter;
     }
     if (!value.contains(RegExp(r'[a-z]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_lowercase_letter;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_lowercase_letter;
     }
 
     if (!value.contains(RegExp(r'[0-9]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_number;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_number;
     }
 
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_special_character;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_special_character;
     }
 
     return null;

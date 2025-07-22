@@ -4,6 +4,7 @@ class EventModel {
   static const String collectionName = "Events";
   String title;
   String id;
+  String? userId;
   String imagePath;
   String description;
   String categoryName;
@@ -14,6 +15,7 @@ class EventModel {
   EventModel({
     required this.title,
     this.id = "",
+    this.userId = "",
     required this.imagePath,
     required this.timeOfDay,
     required this.description,
@@ -32,6 +34,7 @@ class EventModel {
       'date': date.millisecondsSinceEpoch,
       'time_of_day': timeOfDay,
       'is_favorite': isFavorite,
+      'userId': userId,
     };
   }
 
@@ -44,6 +47,7 @@ class EventModel {
         categoryName: json['category_name'],
         date: DateTime.fromMillisecondsSinceEpoch(json['date']),
         isFavorite: json['is_favorite'],
+        userId: json['userId'],
         timeOfDay: json['time_of_day'],
       );
 }

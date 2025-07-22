@@ -216,7 +216,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     icon: Icons.access_time_outlined,
                     title: "Event Time",
                     onPressed: () async {
-                      final time = await showTimePickerView();
+                      final time = await showTimePickerView(context);
                       if (time.isNotEmpty) {
                         setState(() {
                           formattedTime = time;
@@ -294,7 +294,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     }
   }
 
-  Future<String> showTimePickerView() async {
+  Future<String> showTimePickerView(context) async {
     TimeOfDay? selectedTime;
     selectedTime = await showTimePicker(
       context: context,

@@ -46,13 +46,9 @@ class EventDetailsScreen extends StatelessWidget {
             onPressed: () {
               // Handle delete action
               homeProvider
-                  .deleteFieldFromDocument(
-                    eventId: model.id,
-                    fieldName: "title",
-                  )
-                  .then((val) {
-                    Navigator.pop(context);
-                  });
+                 .deleteEvent(model.id,context);
+
+
             },
           ),
         ],

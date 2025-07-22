@@ -1,5 +1,5 @@
-
 import 'package:event_app/core/utils/app_text_style.dart';
+import 'package:event_app/features/auth/controller/auth_controller.dart';
 
 import 'package:event_app/features/onBoarding/view/widgets/toggle_switch.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +26,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController nameController = TextEditingController();
-
 
   bool isPasswordVisible = true;
 
@@ -38,6 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var width = MediaQuery.of(context).size.width;
     var appLocalizations = AppLocalizations.of(context)!;
     var appLanguageProvider = Provider.of<AppLanguageProvider>(context);
+    var authController = Provider.of<AuthController>(context);
 
     bool isEnglish = appLanguageProvider.locale.languageCode == 'en';
 
@@ -69,15 +70,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     CustomTextFormFiled(
-                      controller: emailController,
+                      controller: nameController,
                       hintText: appLocalizations.name,
                       prefixIcon: Icons.person,
 
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return  appLocalizations.please_enter_your_name;
+                          return appLocalizations.please_enter_your_name;
                         }
-
 
                         return null;
                       },
@@ -134,19 +134,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           : Icons.visibility_off,
                       keyboardType: TextInputType.text,
 
-                      validator: (value){
+                      validator: (value) {
                         if (value!.isEmpty) {
                           return appLocalizations.please_enter_your_password;
                         }
                         if (value.length < 6) {
-                          return appLocalizations.password_must_be_at_least_6_characters;
+                          return appLocalizations
+                              .password_must_be_at_least_6_characters;
                         }
 
-                        if (value !=passwordController.text) {
+                        if (value != passwordController.text) {
                           return appLocalizations.password_does_not_match;
                         }
-
-
 
                         return null;
                       },
@@ -163,11 +162,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       title: appLocalizations.login,
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            AppRoute.homeRouteName,
-                          );
-                          setState(() {});
+                         authController.createAccount(
+                            emailAddress: emailController.text,
+                            password: passwordController.text,
+                            name: nameController.text,
+                          ).then((val){
+                            Navigator.pushReplacementNamed(context,AppRoute.homeRouteName);
+                         });
                         }
                       },
                     ),
@@ -198,9 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: height * 0.01),
 
-
               ToggleSwitch(
-
                 isSelected: isEnglish,
                 imagePathLeft: AppAssets.enLogo,
                 imagePathRight: AppAssets.egLogo,
@@ -224,20 +223,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return AppLocalizations.of(context)!.please_enter_your_password;
     }
     if (value.length < 6) {
-      return AppLocalizations.of(context)!.password_must_be_at_least_6_characters;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_be_at_least_6_characters;
     }
     if (!value.contains(RegExp(r'[A-Z]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_uppercase_letter;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_uppercase_letter;
     }
     if (!value.contains(RegExp(r'[a-z]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_lowercase_letter;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_lowercase_letter;
     }
     if (!value.contains(RegExp(r'[0-9]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_number;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_number;
     }
 
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return AppLocalizations.of(context)!.password_must_contain_at_least_one_special_character;
+      return AppLocalizations.of(
+        context,
+      )!.password_must_contain_at_least_one_special_character;
     }
 
     return null;
