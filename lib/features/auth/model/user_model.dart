@@ -4,8 +4,10 @@ class UserModel {
   static const String collectionName = "Users";
   String userId;
   String userImage;
+  String createdAt;
 
   UserModel({
+    required this.createdAt,
     required this.name,
     required this.email,
     this.userId = "",
@@ -15,6 +17,7 @@ class UserModel {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
+      'created_at': createdAt,
       'email': email,
       'user_id': userId,
       'user_image': userImage,
@@ -27,5 +30,6 @@ class UserModel {
         email: json['email'],
         userId: json['user_id'],
         userImage: json['user_image'],
+        createdAt: json['created_at'],
       );
 }

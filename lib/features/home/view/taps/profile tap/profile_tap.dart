@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_route.dart';
 import '../../../../../core/utils/app_text_style.dart';
 import '../../../../../l10n/app_localizations.dart';
+import '../../../../auth/controller/auth_controller.dart';
 import 'widgets/bottom_sheet_view_item.dart';
 import 'widgets/custom_app_bar.dart';
 import 'widgets/drop_down_view.dart';
@@ -19,13 +21,24 @@ class ProfileTap extends StatefulWidget {
   State<ProfileTap> createState() => _ProfileTapState();
 }
 
+
 class _ProfileTapState extends State<ProfileTap> {
+
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
 
+    var authController = Provider.of<AuthController>(context);
     var width = MediaQuery.of(context).size.width;
     var appLocalizations = AppLocalizations.of(context)!;
+
+    if (authController.user == null && !authController.isLoading) {
+      authController.getUserData();
+    }
+
+
+
     var appLanguageProvider = Provider.of<AppLanguageProvider>(context);
     bool isEnglish = appLanguageProvider.locale.languageCode == 'en';
     bool isLight = appLanguageProvider.themeMode == ThemeMode.light;
@@ -33,7 +46,10 @@ class _ProfileTapState extends State<ProfileTap> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomAppBar(),
+        CustomAppBar(
+
+          user: authController.user!,
+        ),
         SizedBox(height: height * 0.02),
         DropDownView(
           isDark: isLight ? false : true,
@@ -86,11 +102,13 @@ class _ProfileTapState extends State<ProfileTap> {
           padding: EdgeInsets.symmetric(horizontal: width * 0.04),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                AppRoute.loginRouteName,
-                (route) => false,
-              );
+             FirebaseAuth.instance.signOut().then((val){
+               Navigator.pushNamedAndRemoveUntil(
+                 context,
+                 AppRoute.loginRouteName,
+                     (route) => false,
+               );
+             });
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

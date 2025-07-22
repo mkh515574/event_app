@@ -33,8 +33,9 @@ class HomeProvider extends ChangeNotifier {
   void getAllEvents() async {
 
 
+
         await FireBaseUtils.getEventsCollection()
-            .orderBy("date", descending: true).where("userId" ,isEqualTo: auth!.uid )
+           .where("userId" ,isEqualTo: auth!.uid )
             .snapshots().listen((querySnapshot) {
           events = querySnapshot.docs.map((doc) => doc.data()).toList();
           favoriteEvents = events;
@@ -64,6 +65,8 @@ class HomeProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+
 
 void deleteEvent(String eventId,context){
     FireBaseUtils.deleteEvent(eventId).then((val){

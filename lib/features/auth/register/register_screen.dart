@@ -31,6 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
 
   bool isPasswordVisible = true;
+  bool isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,163 +55,190 @@ class _RegisterScreenState extends State<RegisterScreen> {
           horizontal: width * 0.04,
           vertical: height * 0.02,
         ),
-        child: SingleChildScrollView(
-          child: Column(
+        child: AbsorbPointer(
+          absorbing: isLoggedIn,
+          child: Stack(
             children: [
-              Image.asset(
-                AppAssets.logo,
-                width: width * 0.35,
-                height: height * 0.2,
-              ),
-              SizedBox(height: height * 0.02),
+              Opacity(
+                opacity: isLoggedIn ? 0.5 : 1.0,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        AppAssets.logo,
+                        width: width * 0.35,
+                        height: height * 0.2,
+                      ),
+                      SizedBox(height: height * 0.02),
 
-              Form(
-                key: formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    CustomTextFormFiled(
-                      controller: nameController,
-                      hintText: appLocalizations.name,
-                      prefixIcon: Icons.person,
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CustomTextFormFiled(
+                              controller: nameController,
+                              hintText: appLocalizations.name,
+                              prefixIcon: Icons.person,
 
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return appLocalizations.please_enter_your_name;
-                        }
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return appLocalizations
+                                      .please_enter_your_name;
+                                }
 
-                        return null;
-                      },
-                      keyboardType: TextInputType.text,
-                    ),
-                    SizedBox(height: height * 0.02),
-                    CustomTextFormFiled(
-                      controller: emailController,
-                      hintText: appLocalizations.email,
-                      prefixIcon: Icons.email,
+                                return null;
+                              },
+                              keyboardType: TextInputType.text,
+                            ),
+                            SizedBox(height: height * 0.02),
+                            CustomTextFormFiled(
+                              controller: emailController,
+                              hintText: appLocalizations.email,
+                              prefixIcon: Icons.email,
 
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return appLocalizations.please_enter_your_email;
-                        }
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return appLocalizations
+                                      .please_enter_your_email;
+                                }
 
-                        final bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                        ).hasMatch(value);
-                        if (!emailValid) {
-                          return appLocalizations.please_enter_a_valid_email;
-                        }
+                                final bool emailValid = RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                                ).hasMatch(value);
+                                if (!emailValid) {
+                                  return appLocalizations
+                                      .please_enter_a_valid_email;
+                                }
 
-                        return null;
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(height: height * 0.02),
-                    CustomTextFormFiled(
-                      controller: passwordController,
-                      hintText: appLocalizations.password,
-                      prefixIcon: Icons.lock,
-                      obscureText: isPasswordVisible,
-                      suffixIcon: isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      keyboardType: TextInputType.text,
+                                return null;
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                            SizedBox(height: height * 0.02),
+                            CustomTextFormFiled(
+                              controller: passwordController,
+                              hintText: appLocalizations.password,
+                              prefixIcon: Icons.lock,
+                              obscureText: isPasswordVisible,
+                              suffixIcon: isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              keyboardType: TextInputType.text,
 
-                      validator: validatePassword,
-                      onSuffixPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                    ),
-                    SizedBox(height: height * 0.02),
-                    CustomTextFormFiled(
-                      controller: confirmPasswordController,
-                      hintText: appLocalizations.confrim_password,
-                      prefixIcon: Icons.lock,
-                      obscureText: isPasswordVisible,
-                      suffixIcon: isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      keyboardType: TextInputType.text,
+                              validator: validatePassword,
+                              onSuffixPressed: () {
+                                setState(() {
+                                  isPasswordVisible = !isPasswordVisible;
+                                });
+                              },
+                            ),
+                            SizedBox(height: height * 0.02),
+                            CustomTextFormFiled(
+                              controller: confirmPasswordController,
+                              hintText: appLocalizations.confrim_password,
+                              prefixIcon: Icons.lock,
+                              obscureText: isPasswordVisible,
+                              suffixIcon: isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              keyboardType: TextInputType.text,
 
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return appLocalizations.please_enter_your_password;
-                        }
-                        if (value.length < 6) {
-                          return appLocalizations
-                              .password_must_be_at_least_6_characters;
-                        }
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return appLocalizations
+                                      .please_enter_your_password;
+                                }
+                                if (value.length < 6) {
+                                  return appLocalizations
+                                      .password_must_be_at_least_6_characters;
+                                }
 
-                        if (value != passwordController.text) {
-                          return appLocalizations.password_does_not_match;
-                        }
+                                if (value != passwordController.text) {
+                                  return appLocalizations
+                                      .password_does_not_match;
+                                }
 
-                        return null;
-                      },
-                      onSuffixPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                    ),
+                                return null;
+                              },
+                              onSuffixPressed: () {
+                                setState(() {
+                                  isPasswordVisible = !isPasswordVisible;
+                                });
+                              },
+                            ),
 
-                    SizedBox(height: height * 0.02),
+                            SizedBox(height: height * 0.02),
 
-                    CustomButton(
-                      title: appLocalizations.login,
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                         authController.createAccount(
-                            emailAddress: emailController.text,
-                            password: passwordController.text,
-                            name: nameController.text,
-                          ).then((val){
-                            Navigator.pushReplacementNamed(context,AppRoute.homeRouteName);
-                         });
-                        }
-                      },
-                    ),
-                  ],
+                            CustomButton(
+                              title: appLocalizations.login,
+                              onPressed: () async{
+                                setState(() {
+                                  isLoggedIn = true;
+                                });
+                                if (formKey.currentState!.validate()) {
+                                  await authController.createAccount(
+                                    context: context,
+                                    emailAddress: emailController.text,
+                                    password: passwordController.text,
+                                    name: nameController.text,
+                                  );
+                                }
+                                setState(() {
+                                  isLoggedIn = false;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: height * 0.02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            appLocalizations.already_have_account,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoute.registerRouteName,
+                              );
+                            },
+                            child: Text(
+                              appLocalizations.login,
+                              style: AppTextStyle.bold20primaryLight.copyWith(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: height * 0.01),
+
+                      ToggleSwitch(
+                        isSelected: isEnglish,
+                        imagePathLeft: AppAssets.enLogo,
+                        imagePathRight: AppAssets.egLogo,
+                        onTapLeft: () {
+                          if (!isEnglish)
+                            appLanguageProvider.changeLanguage("en");
+                        },
+                        onTapRight: () {
+                          if (isEnglish)
+                            appLanguageProvider.changeLanguage("ar");
+                        },
+                      ),
+                      SizedBox(height: height * 0.02),
+                    ],
+                  ),
                 ),
               ),
-
-              SizedBox(height: height * 0.02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    appLocalizations.already_have_account,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, AppRoute.registerRouteName);
-                    },
-                    child: Text(
-                      appLocalizations.login,
-                      style: AppTextStyle.bold20primaryLight.copyWith(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: height * 0.01),
-
-              ToggleSwitch(
-                isSelected: isEnglish,
-                imagePathLeft: AppAssets.enLogo,
-                imagePathRight: AppAssets.egLogo,
-                onTapLeft: () {
-                  if (!isEnglish) appLanguageProvider.changeLanguage("en");
-                },
-                onTapRight: () {
-                  if (isEnglish) appLanguageProvider.changeLanguage("ar");
-                },
-              ),
-              SizedBox(height: height * 0.02),
+              if (isLoggedIn)
+                Center(child: CircularProgressIndicator()), // optional overlay
             ],
           ),
         ),

@@ -1,18 +1,22 @@
+import 'package:event_app/features/auth/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:event_app/core/utils/app_assets.dart';
 import 'package:event_app/core/utils/app_colors.dart';
 import 'package:event_app/core/utils/app_text_style.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+  final UserModel user ;
+  const CustomAppBar({required this.user, super.key});
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-    // الحصول على كود اللغة الحالي
+
     String languageCode = Localizations.localeOf(context).languageCode;
+    var auth = FirebaseAuth.instance.currentUser;
 
     return Container(
       height: height * 0.24,
@@ -50,10 +54,10 @@ class CustomAppBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("John Safwat", style: AppTextStyle.bold24White),
+                Text(user.name, style: AppTextStyle.bold24White),
                 SizedBox(height: height * 0.02),
                 Text(
-                  "johnsafwat.route@gmail.com",
+                  user.email,
                   style: AppTextStyle.medium16White,
                 ),
               ],
@@ -66,10 +70,10 @@ class CustomAppBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("John Safwat", style: AppTextStyle.bold24White),
+                Text(user.name, style: AppTextStyle.bold24White),
                 SizedBox(height: height * 0.02),
                 Text(
-                  "johnsafwat.route@gmail.com",
+                  user.email,
                   style: AppTextStyle.medium16White,
                 ),
               ],

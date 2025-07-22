@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_app/features/auth/controller/auth_controller.dart';
 import 'package:event_app/features/auth/login/login_screen.dart';
 import 'package:event_app/features/auth/register/register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,8 @@ void main() async {
 
   final appLanguageProvider = AppLanguageProvider();
   await appLanguageProvider.init(language: language, themeMode: themeMode);
+
+
 
   runApp(
     MultiProvider(
@@ -77,7 +80,10 @@ class MyApp extends StatelessWidget {
 
       initialRoute: showOnBoarding
           ? AppRoute.onBoardingPersonalizeRouteName
-          : AppRoute.loginRouteName,
+          : (FirebaseAuth.instance.currentUser != null
+          ? AppRoute.homeRouteName
+          : AppRoute.loginRouteName),
+
       routes: {
         AppRoute.homeRouteName: (context) => HomeScreen(),
         AppRoute.onBoardingRouteName: (context) => const OnBoardingScreen(),

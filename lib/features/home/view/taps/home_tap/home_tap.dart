@@ -11,6 +11,7 @@ import '../../../../../core/utils/app_route.dart';
 import '../../../../../core/utils/app_text_style.dart';
 
 import '../../../../../core/utils/widgets/event_view_item.dart';
+import '../../../../auth/controller/auth_controller.dart';
 import '../../../controller/home_provider.dart';
 import '../../widgets/tap_view_item.dart';
 
@@ -32,8 +33,15 @@ class HomeTap extends StatelessWidget {
       context,
       listen: false,
     );
+    
     final currentLocale = appLanguageProvider.locale;
     final currentMode = appLanguageProvider.themeMode;
+    var authController = Provider.of<AuthController>(context);
+    if (authController.user == null && !authController.isLoading) {
+      authController.getUserData();
+    }
+
+    
     var themeMode = appLanguageProvider.isDark();
 
     return Column(
@@ -72,7 +80,7 @@ class HomeTap extends StatelessWidget {
                           fontSize: 14,
                         ),
                       ),
-                      Text("John Safwat", style: AppTextStyle.bold24White),
+                      Text(authController.user!.name, style: AppTextStyle.bold24White),
                     ],
                   ),
                   Row(
