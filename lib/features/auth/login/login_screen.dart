@@ -205,7 +205,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: height * 0.02),
                           CustomButton(
                             backgroundColor: Theme.of(context).canvasColor,
-                            onPressed: () {},
+                            onPressed: () {
+                              authController.signInWithGoogle(
+                                context
+                              );
+                            },
                             hasIcons: true,
                             widget: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

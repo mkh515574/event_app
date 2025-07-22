@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_app/core/utils/firebase_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,29 +27,38 @@ class HomeProvider extends ChangeNotifier {
       {local.exhibition: Icons.museum},
     ];
   }
+
   var auth = FirebaseAuth.instance.currentUser;
 
-
-
   int selectedIndex = 0;
-  void getAllEvents() async {
+  StreamSubscription<QuerySnapshot<EventModel>>? _eventsSubscription;
 
+  void getAllEvents() {
+    _eventsSubscription?.cancel();
 
-
-        await FireBaseUtils.getEventsCollection()
-           .where("userId" ,isEqualTo: auth!.uid )
-            .snapshots().listen((querySnapshot) {
+    _eventsSubscription = FireBaseUtils.getEventsCollection()
+        .where("userId", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .snapshots()
+        .listen((querySnapshot) {
           events = querySnapshot.docs.map((doc) => doc.data()).toList();
           favoriteEvents = events;
           notifyListeners();
         });
+  }
 
+  void clearData() {
+    events = [];
+    favoriteEvents = [];
+    _eventsSubscription?.cancel();
+    _eventsSubscription = null;
+    notifyListeners();
   }
 
   void getFelteredEvents(String category) async {
     QuerySnapshot<EventModel> querySnapshot =
         await FireBaseUtils.getEventsCollection()
-            .where("category_name", isEqualTo: category).where("userId" ,isEqualTo: auth!.uid )
+            .where("category_name", isEqualTo: category)
+            .where("userId", isEqualTo: auth!.uid)
             .get();
     favoriteEvents = querySnapshot.docs.map((e) {
       return e.data();
@@ -66,19 +77,16 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
-void deleteEvent(String eventId,context){
-    FireBaseUtils.deleteEvent(eventId).then((val){
+  void deleteEvent(String eventId, context) {
+    FireBaseUtils.deleteEvent(eventId).then((val) {
       Navigator.pop(context);
     });
-}
+  }
 
   void setSelectedIndex(int index, BuildContext context) {
     selectedIndex = index;
     selectedIndex == 0
         ? getAllEvents()
         : getFelteredEvents(getCategories(context)[index].keys.first);
-
   }
 }

@@ -1,5 +1,5 @@
+import 'package:event_app/features/auth/model/user_model.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,33 +13,32 @@ import 'widgets/bottom_sheet_view_item.dart';
 import 'widgets/custom_app_bar.dart';
 import 'widgets/drop_down_view.dart';
 
-
 class ProfileTap extends StatefulWidget {
-  const ProfileTap({super.key});
+  final UserModel model;
+  const ProfileTap({super.key, required this.model});
 
   @override
   State<ProfileTap> createState() => _ProfileTapState();
 }
 
-
 class _ProfileTapState extends State<ProfileTap> {
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
 
-    var authController = Provider.of<AuthController>(context);
     var width = MediaQuery.of(context).size.width;
     var appLocalizations = AppLocalizations.of(context)!;
 
-    if (authController.user == null && !authController.isLoading) {
-      authController.getUserData();
-    }
-
-
 
     var appLanguageProvider = Provider.of<AppLanguageProvider>(context);
+
+
     bool isEnglish = appLanguageProvider.locale.languageCode == 'en';
     bool isLight = appLanguageProvider.themeMode == ThemeMode.light;
 
@@ -47,8 +46,7 @@ class _ProfileTapState extends State<ProfileTap> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomAppBar(
-
-          user: authController.user!,
+          user : widget.model
         ),
         SizedBox(height: height * 0.02),
         DropDownView(
@@ -102,13 +100,17 @@ class _ProfileTapState extends State<ProfileTap> {
           padding: EdgeInsets.symmetric(horizontal: width * 0.04),
           child: ElevatedButton(
             onPressed: () {
-             FirebaseAuth.instance.signOut().then((val){
-               Navigator.pushNamedAndRemoveUntil(
-                 context,
-                 AppRoute.loginRouteName,
-                     (route) => false,
-               );
-             });
+              final authController = Provider.of<AuthController>(context, listen: false);
+
+              authController.fullSignOut(context).then((value) {
+
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoute.loginRouteName,
+                      (route) => false,
+                );
+              });
+
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

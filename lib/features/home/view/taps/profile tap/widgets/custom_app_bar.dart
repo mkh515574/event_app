@@ -7,7 +7,8 @@ import 'package:event_app/core/utils/app_text_style.dart';
 
 class CustomAppBar extends StatelessWidget {
   final UserModel user ;
-  const CustomAppBar({required this.user, super.key});
+
+   CustomAppBar({  required this.user,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +41,17 @@ class CustomAppBar extends StatelessWidget {
 
             height: height * 0.24,
             width: width * 0.31,
+            clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: AppColors.whiteColor,
+
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(width * 0.2),
                 bottomLeft: Radius.circular(width * 0.2),
                 bottomRight: Radius.circular(width * 0.2),
               ),
             ),
-            child: Image.asset(AppAssets.profileImage, fit: BoxFit.contain),
+            child: user.userImage.isEmpty ? Image.asset(AppAssets.profileImage, fit: BoxFit.contain): Image.network(user.userImage, fit: BoxFit.contain),
           ) :   Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

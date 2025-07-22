@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             SizedBox(height: height * 0.02),
 
                             CustomButton(
-                              title: appLocalizations.login,
+                              title: appLocalizations.register,
                               onPressed: () async{
                                 setState(() {
                                   isLoggedIn = true;

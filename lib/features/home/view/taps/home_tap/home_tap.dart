@@ -1,5 +1,5 @@
 import 'package:event_app/core/utils/app_assets.dart';
-
+import 'package:event_app/features/auth/model/user_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,12 +11,13 @@ import '../../../../../core/utils/app_route.dart';
 import '../../../../../core/utils/app_text_style.dart';
 
 import '../../../../../core/utils/widgets/event_view_item.dart';
-import '../../../../auth/controller/auth_controller.dart';
+
 import '../../../controller/home_provider.dart';
 import '../../widgets/tap_view_item.dart';
 
 class HomeTap extends StatelessWidget {
-  const HomeTap({super.key});
+  final UserModel model;
+  const HomeTap({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +34,15 @@ class HomeTap extends StatelessWidget {
       context,
       listen: false,
     );
-    
     final currentLocale = appLanguageProvider.locale;
     final currentMode = appLanguageProvider.themeMode;
-    var authController = Provider.of<AuthController>(context);
-    if (authController.user == null && !authController.isLoading) {
-      authController.getUserData();
-    }
 
-    
     var themeMode = appLanguageProvider.isDark();
 
     return Column(
       children: [
         Container(
-          height: height * 0.25,
+          height: height * 0.26,
           width: double.infinity,
           padding: EdgeInsets.only(
             left: width * 0.03,
@@ -80,7 +75,7 @@ class HomeTap extends StatelessWidget {
                           fontSize: 14,
                         ),
                       ),
-                      Text(authController.user!.name, style: AppTextStyle.bold24White),
+                      Text(model.name, style: AppTextStyle.bold24White),
                     ],
                   ),
                   Row(
@@ -167,7 +162,7 @@ class HomeTap extends StatelessWidget {
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     children: [
-                      SvgPicture.asset(AppAssets.emptySvg),
+                      SvgPicture.asset(AppAssets.emptySvg,height: height*0.4,),
                       SizedBox(height: height * 0.02),
                       Text(
                         "No Event Founded",

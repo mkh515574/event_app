@@ -2,71 +2,134 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_app/core/utils/app_colors.dart';
 import 'package:event_app/features/auth/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_route.dart';
+import '../../home/controller/home_provider.dart';
 
 class AuthController extends ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  UserModel? user;
+  List<UserModel> userData = [];
+  bool isLoading = false;
+
   static CollectionReference<UserModel> getUserCollection() {
     return FirebaseFirestore.instance
         .collection(UserModel.collectionName)
         .withConverter<UserModel>(
           fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
-          toFirestore: (e, _) => e.toJson(),
+          toFirestore: (user, _) => user.toJson(),
         );
   }
 
-  UserModel? user;
+  void _showToast(String msg, {Color? bgColor}) {
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: bgColor ?? AppColors.primaryLightColor,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 
-  bool isLoading = false;
+  void _showSnackBar(BuildContext context, String msg, {Color? bgColor}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: bgColor ?? AppColors.primaryLightColor,
+      ),
+    );
+  }
 
-  Future<void> getUserData() async {
-    isLoading = true;
-    notifyListeners();
+  void getAllUsers() {
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) return;
 
-    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    getUserCollection()
+        .where("user_id", isEqualTo: currentUser.uid)
+        .snapshots()
+        .listen((querySnapshot) {
+          userData = querySnapshot.docs.map((doc) => doc.data()).toList();
+          notifyListeners();
+        });
+  }
 
-
-    if (userId != null) {
-      QuerySnapshot<UserModel> snapshot = await getUserCollection()
-          .where("user_id", isEqualTo: userId)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        user = snapshot.docs.first.data();
-
-        print(user.toString());
-        isLoading = false;
-        notifyListeners();
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        _showToast("Google sign-in cancelled");
+        return;
       }
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(
+        credential,
+      );
+      final firebaseUser = userCredential.user;
+      if (firebaseUser == null) {
+        _showToast("Failed to sign in with Google");
+        return;
+      }
+
+      final uid = firebaseUser.uid;
+
+      // Check if user already exists
+      final doc = await getUserCollection().doc(uid).get();
+      if (!doc.exists) {
+        await getUserCollection()
+            .doc(uid)
+            .set(
+              UserModel(
+                name: firebaseUser.displayName ?? '',
+                email: firebaseUser.email ?? '',
+                userId: uid,
+                userImage: firebaseUser.photoURL ?? '',
+                createdAt: FieldValue.serverTimestamp().toString(),
+              ),
+            );
+      }
+
+
+      _showToast("Account Created Successfully");
+
+      Navigator.pushReplacementNamed(context, AppRoute.homeRouteName);
+    } catch (e) {
+      _showToast("Sign-in failed: ${e.toString()}", bgColor: Colors.red);
     }
+
+    notifyListeners();
   }
 
-  static Future<void> addEvent(UserModel user) {
-    DocumentReference<UserModel> doc = getUserCollection().doc();
-
-    return doc.set(user);
-  }
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   Future<void> createAccount({
     required String emailAddress,
     required String password,
     required String name,
-    required BuildContext context, // ← Add this
+    required BuildContext context,
   }) async {
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(
-            email: emailAddress,
-            password: password,
-          );
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
 
-      String uid = userCredential.user!.uid;
+      final firebaseUser = userCredential.user;
+      if (firebaseUser == null) {
+        _showSnackBar(context, 'Account creation failed');
+        return;
+      }
 
-      getUserCollection()
+      final uid = firebaseUser.uid;
+
+      await getUserCollection()
           .doc(uid)
           .set(
             UserModel(
@@ -77,33 +140,33 @@ class AuthController extends ChangeNotifier {
             ),
           );
 
-      Fluttertoast.showToast(
-        msg: "Account Created Successfully",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: AppColors.primaryLightColor,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      _showToast("Account Created Successfully");
 
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoute.homeRouteName,
-      ); // or any route
+
+      Navigator.pushReplacementNamed(context, AppRoute.homeRouteName);
     } on FirebaseAuthException catch (e) {
-      String errorMessage = e.message ?? 'Registration failed';
-      debugPrint("FirebaseAuthException: $errorMessage");
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(errorMessage)));
+      _showSnackBar(context, e.message ?? 'Registration failed');
     } catch (e) {
-      debugPrint("General Error: $e");
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Something went wrong.')));
+      _showSnackBar(context, 'Something went wrong');
+      debugPrint("Error: $e");
     }
+
+    notifyListeners();
+  }
+
+  Future<void> fullSignOut(context) async {
+    await _auth.signOut();
+
+    final googleSignIn = GoogleSignIn();
+    if (await googleSignIn.isSignedIn()) {
+      await googleSignIn.signOut();
+    }
+    var homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    userData = [];
+
+    homeProvider.clearData();
+    user = null;
+    notifyListeners();
   }
 
   Future<void> login({
@@ -112,50 +175,32 @@ class AuthController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      final credential = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
 
-      Fluttertoast.showToast(
-        msg: "Login Successfully",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: AppColors.primaryLightColor,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
+      _showToast("Login Successfully");
 
       Navigator.pushReplacementNamed(context, AppRoute.homeRouteName);
     } on FirebaseAuthException catch (e) {
-      String errorMessage = '';
-
-      if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided.';
-      } else {
-        errorMessage = e.message ?? 'An error occurred';
+      String errorMessage;
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found for that email.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Wrong password provided.';
+          break;
+        default:
+          errorMessage = e.message ?? 'An error occurred';
       }
-
-      // ❌ Show error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-          backgroundColor: AppColors.primaryLightColor,
-        ),
-      );
+      _showSnackBar(context, errorMessage);
     } catch (e) {
-      print('Login error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: AppColors.primaryLightColor,
-
-          content: Text('Something went wrong.'),
-        ),
-      );
+      debugPrint("Login error: $e");
+      _showSnackBar(context, 'Something went wrong');
     }
+
+    notifyListeners();
   }
 }
