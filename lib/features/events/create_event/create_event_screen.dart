@@ -1,12 +1,14 @@
-
 import 'package:event_app/core/utils/app_assets.dart';
 import 'package:event_app/core/utils/app_colors.dart';
+import 'package:event_app/core/utils/firebase_utils.dart';
 import 'package:event_app/core/utils/widgets/custom_button.dart';
 import 'package:event_app/core/utils/widgets/custom_text_form_filed.dart';
 import 'package:event_app/features/events/create_event/widgets/date_or_time_view_item.dart';
+import 'package:event_app/features/events/model/event_model.dart';
 import 'package:event_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -27,34 +29,34 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-
+  bool isFormSubmitted = false;
 
   String formattedDate = '';
   String formattedTime = '';
+  late String imageUrl;
+  late List<Map<String, IconData>> categories;
 
   @override
   Widget build(BuildContext context) {
     var appLocalizations = AppLocalizations.of(context)!;
-       final List<Map<String, IconData>> categories = [
-   
-    {appLocalizations.sports: Icons.directions_bike},
-    {appLocalizations.gaming: Icons.videogame_asset},
-    {appLocalizations.work_shop: Icons.build},
-    {appLocalizations.meeting: Icons.meeting_room},
-    {appLocalizations.holiday: Icons.beach_access},
-    {appLocalizations.birthday: Icons.cake},
-    {appLocalizations.eating: Icons.restaurant},
-    {appLocalizations.book_club: Icons.book},
-    {appLocalizations.exhibition: Icons.museum},
-  ];
+    categories = [
+      {appLocalizations.sports: Icons.directions_bike},
+      {appLocalizations.gaming: Icons.videogame_asset},
+      {appLocalizations.work_shop: Icons.build},
+      {appLocalizations.meeting: Icons.meeting_room},
+      {appLocalizations.holiday: Icons.beach_access},
+      {appLocalizations.birthday: Icons.cake},
+      {appLocalizations.eating: Icons.restaurant},
+      {appLocalizations.book_club: Icons.book},
+      {appLocalizations.exhibition: Icons.museum},
+    ];
     final appLanguageProvider = Provider.of<AppLanguageProvider>(
       context,
       listen: false,
     );
 
     var themeMode = appLanguageProvider.isDark();
-    final imageUrl = EventAssets.getImage(
+    imageUrl = EventAssets.getImage(
       categories[selectedIndex].keys.first,
       themeMode,
     );
@@ -63,13 +65,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     var height = MediaQuery.of(context).size.height;
     bool isDark = appLanguageProvider.isDark();
 
- 
     return Scaffold(
-    
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(appLocalizations.create_event, style: AppTextStyle.bold20primaryLight),
+        title: Text(
+          appLocalizations.create_event,
+          style: AppTextStyle.bold20primaryLight,
+        ),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -108,15 +111,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       },
                       child: TapViewItem(
                         borderColor: selectedIndex == index
-                            ? isDark ? AppColors.backgroundDarkColor: AppColors.primaryLightColor
-                            :AppColors.primaryLightColor ,
+                            ? isDark
+                                  ? AppColors.backgroundDarkColor
+                                  : AppColors.primaryLightColor
+                            : AppColors.primaryLightColor,
                         iconColor: selectedIndex == index
-                            ? (isDark ? AppColors.backgroundDarkColor: AppColors.backgroundLightColor)
-                            :AppColors.primaryLightColor,
-                    
-                       
-                        backgroundColor:selectedIndex == index? AppColors.primaryLightColor
-                            : (isDark? AppColors.backgroundDarkColor:AppColors.whiteColor) ,
+                            ? (isDark
+                                  ? AppColors.backgroundDarkColor
+                                  : AppColors.backgroundLightColor)
+                            : AppColors.primaryLightColor,
+
+                        backgroundColor: selectedIndex == index
+                            ? AppColors.primaryLightColor
+                            : (isDark
+                                  ? AppColors.backgroundDarkColor
+                                  : AppColors.whiteColor),
                         label: categories[index].keys.first,
                         icon: categories[index].values.first,
                         isSelected: selectedIndex == index,
@@ -129,78 +138,103 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ),
 
               SizedBox(height: height * 0.02),
-       
+
               Form(
                 key: formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                     Text("Title", style: Theme.of(context).textTheme.bodyMedium),
-              SizedBox(height: height * 0.01),
-              CustomTextFormFiled(
-                controller: titleController,
-                prefixIcon: Icons.edit_note_outlined,
-                validator: (value){
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter event title';
-                  }
-                  return null;
-                },
-                hintText: "Event Title",
+                  children: [
+                    Text(
+                      "Title",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(height: height * 0.01),
+                    CustomTextFormFiled(
+                      controller: titleController,
+                      prefixIcon: Icons.edit_note_outlined,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter event title';
+                        }
+                        return null;
+                      },
+                      hintText: "Event Title",
+                    ),
+                    SizedBox(height: height * 0.01),
+                    Text(
+                      "Description",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(height: height * 0.01),
+                    CustomTextFormFiled(
+                      controller: descriptionController,
+                      maxLines: 4,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter event description';
+                        }
+                        return null;
+                      },
+                      hintText: "Event Description",
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: height * 0.01),
-              Text(
-                "Description",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: height * 0.01),
-              CustomTextFormFiled(
-                controller: descriptionController,
-                maxLines: 4,
-                validator: (value){
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter event description';
-                  }
-                  return null;
-                },
-                hintText: "Event Description",
-              ),
-              ],),),
               SizedBox(height: height * 0.02),
-              DateOrTimeViewItem(
-                label: formattedDate.isEmpty ? "Choose Date" : formattedDate,
-                icon: Icons.calendar_month,
-                title: "Event Date",
-                onPressed: () async {
-                  final date = await showDatePickerView();
-                  if (date.isNotEmpty) {
-                    setState(() {
-                      formattedDate = date;
-                    });
-                  }
-                },
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DateOrTimeViewItem(
+                    label: formattedDate.isEmpty
+                        ? "Choose Date"
+                        : formattedDate,
+                    icon: Icons.calendar_today_outlined,
+                    title: "Event Date",
+                    isEmpty: isFormSubmitted && formattedDate.isEmpty,
+                    error: "Please enter event date",
+                    onPressed: () async {
+                      final date = await showDatePickerView();
+                      if (date.isNotEmpty) {
+                        setState(() {
+                          formattedDate = date;
+                        });
+                      }
+                    },
+                  ),
+                ],
               ),
-              DateOrTimeViewItem(
-                label: formattedTime.isEmpty? "Choose Time" : formattedTime,
-                icon: Icons.access_time,
-                title: "Event Time",
-                onPressed: ()async {
-                  final time = await showTimePickerView();
-                  if (time.isNotEmpty) {
-                    setState(() {
-                      formattedTime = time;
-                    });
-                  }
-                },
+              SizedBox(height: height * 0.02),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DateOrTimeViewItem(
+                    label: formattedTime.isEmpty
+                        ? "Choose Time"
+                        : formattedTime,
+                    icon: Icons.access_time_outlined,
+                    title: "Event Time",
+                    onPressed: () async {
+                      final time = await showTimePickerView();
+                      if (time.isNotEmpty) {
+                        setState(() {
+                          formattedTime = time;
+                        });
+                      }
+                    },
+                    isEmpty: isFormSubmitted && formattedTime.isEmpty,
+                    error: "Please enter event time",
+                  ),
+                ],
               ),
               SizedBox(height: height * 0.02),
               Text("Location", style: Theme.of(context).textTheme.bodyMedium),
               SizedBox(height: height * 0.01),
 
               CustomButton(
-                onPressed: ()  {
-              // todo: Implement location selection
-
+                onPressed: () {
+                  // todo: Implement location selection
                 },
                 hasIcons: true,
                 widget: Row(
@@ -233,13 +267,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 backgroundColor: Theme.of(context).canvasColor,
               ),
               SizedBox(height: height * 0.02),
-              CustomButton(onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Event Created Successfully')),
-                  );
-                }
-              }, title: "Add Event"),
+              CustomButton(onPressed: addEvent, title: "Add Event"),
               SizedBox(height: height * 0.03),
             ],
           ),
@@ -265,6 +293,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       return formattedDate;
     }
   }
+
   Future<String> showTimePickerView() async {
     TimeOfDay? selectedTime;
     selectedTime = await showTimePicker(
@@ -277,6 +306,53 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       String formattedTime = selectedTime.format(context);
       return formattedTime;
     }
+  }
 
+  void addEvent() {
+    setState(() {
+      isFormSubmitted = true;
+    });
+
+    if (formKey.currentState!.validate() &&
+        formattedDate.isNotEmpty &&
+        formattedTime.isNotEmpty) {
+      EventModel eventModel = EventModel(
+        title: titleController.text,
+        imagePath: imageUrl,
+        timeOfDay: formattedTime,
+        description: descriptionController.text,
+        categoryName: categories[selectedIndex].keys.first,
+        date: DateFormat('dd/MM/yyyy').parse(formattedDate),
+      );
+      FireBaseUtils.addEvent(eventModel)
+          .then((value) {
+            Navigator.pop(context);
+            Fluttertoast.showToast(
+                msg: "Event Created Successfully",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor:AppColors.primaryLightColor,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+
+
+          })
+          .timeout(
+            Duration(milliseconds: 500),
+            onTimeout: () {
+              Fluttertoast.showToast(
+                  msg: "Event Created Successfully",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: AppColors.primaryLightColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
+            },
+          );
+    }
   }
 }

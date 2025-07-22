@@ -1,16 +1,19 @@
 
+import 'package:event_app/features/events/model/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:intl/intl.dart';
 
-import '../../../features/home/model/event_item_model.dart';
+
+import '../../../features/home/controller/home_provider.dart';
 import '../../providers/app_language_provider.dart';
 import '../app_colors.dart';
 import '../app_text_style.dart';
 import '../events_assets.dart';
 
 class EventViewItem extends StatefulWidget {
-  final EventItemModel model;
+  final EventModel model;
 
 
   const EventViewItem({
@@ -27,7 +30,8 @@ class _EventViewItemState extends State<EventViewItem> {
     var size = MediaQuery.of(context).size;
     var themeMode = Provider.of<AppLanguageProvider>(context).isDark();
 
-    final imageUrl = EventAssets.getImage(widget.model.category, themeMode);
+    var homeProvider = Provider.of<HomeProvider>(context);
+    final imageUrl = EventAssets.getImage(widget.model.categoryName, themeMode);
 
 
     return Container(
@@ -64,11 +68,11 @@ class _EventViewItemState extends State<EventViewItem> {
               child: Column(
                 children: [
                   Text(
-                    widget.model.day,
+                   DateFormat('dd').format(widget.model.date).toString(),
                     style: AppTextStyle.bold20primaryLight.copyWith(fontSize: 14,color: themeMode ? AppColors.whiteColor : AppColors.primaryLightColor),
                   ),
                   Text(
-                    widget.model.month,
+                    DateFormat("MMM").format(widget.model.date).toString(),
                     style: AppTextStyle.bold20primaryLight.copyWith(fontSize: 14,color: themeMode ? AppColors.whiteColor : AppColors.primaryLightColor),
                   ),
                 ],
@@ -99,9 +103,13 @@ class _EventViewItemState extends State<EventViewItem> {
                   ),
                   const SizedBox(width: 8),
                   IconButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      final newStatus = !widget.model.isFavorite;
+
+                      await homeProvider.updateEventFavoriteStatus(widget.model.id, newStatus);
+
                       setState(() {
-                        widget.model.isFavorite = !widget.model.isFavorite;
+                        widget.model.isFavorite = newStatus;
                       });
                     },
                     icon: widget.model.isFavorite

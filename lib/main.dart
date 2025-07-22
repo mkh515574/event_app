@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_app/features/auth/login/login_screen.dart';
 import 'package:event_app/features/auth/register/register_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,13 +14,21 @@ import 'features/auth/forget password/forgot_password_screen.dart';
 import 'features/events/create_event/create_event_screen.dart';
 import 'features/events/edit_event/edit_event_screen.dart';
 import 'features/events/event_details/event_details_screen.dart';
+import 'features/home/controller/home_provider.dart';
 import 'features/home/view/home_screen.dart';
 import 'features/onBoarding/view/on_boarding_personalize.dart';
 import 'features/onBoarding/view/on_boarding_screen.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseFirestore.instance.disableNetwork();
+
+  await FirebaseFirestore.instance.enableNetwork();
   final prefs = await SharedPreferences.getInstance();
   final hasSeenOnBoarding =
       prefs.getBool(SharedPrefsKeys.onBoardingCompleted) ?? false;
@@ -29,10 +39,18 @@ void main() async {
   await appLanguageProvider.init(language: language, themeMode: themeMode);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => appLanguageProvider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => appLanguageProvider,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeProvider(),
+        ),
+      ],
       child: MyApp(showOnBoarding: !hasSeenOnBoarding),
     ),
+
   );
 }
 
@@ -56,7 +74,7 @@ class MyApp extends StatelessWidget {
 
       initialRoute: showOnBoarding
           ? AppRoute.onBoardingPersonalizeRouteName
-          : AppRoute.homeRouteName,
+          : AppRoute.loginRouteName,
       routes: {
         AppRoute.homeRouteName: (context) => HomeScreen(),
         AppRoute.onBoardingRouteName: (context) => const OnBoardingScreen(),

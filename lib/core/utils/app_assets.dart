@@ -26,6 +26,8 @@ abstract class AppAssets {
   static const String favoriteFillIcon = "assets/images/favorite_fill.svg";
   static const String profileFillIcon = "assets/images/profile_fill.svg";
   static const String vector = "assets/images/Vector.svg";
+  static const String emptySvg = "assets/images/empty.svg";
+  static const String emptyFaSvg = "assets/images/empty_fa.svg";
 
   // Event images
   static const String sportsEventLight = "assets/images/sport_light.png";

@@ -1,5 +1,5 @@
 import 'package:event_app/core/utils/app_assets.dart';
-import 'package:event_app/l10n/app_localizations.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,50 +9,32 @@ import '../../../../../core/providers/app_language_provider.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_route.dart';
 import '../../../../../core/utils/app_text_style.dart';
-import '../../../../../core/utils/list_of_events.dart';
+
 import '../../../../../core/utils/widgets/event_view_item.dart';
+import '../../../controller/home_provider.dart';
 import '../../widgets/tap_view_item.dart';
 
-
-
-
-class HomeTap extends StatefulWidget {
+class HomeTap extends StatelessWidget {
   const HomeTap({super.key});
 
   @override
-  State<HomeTap> createState() => _HomeTapState();
-}
-
-class _HomeTapState extends State<HomeTap> {
-  int selectedIndex = 0;
-  
-
-
-
-
-  @override
   Widget build(BuildContext context) {
+    var homeProvider = Provider.of<HomeProvider>(context);
+    if (homeProvider.events.isEmpty) {
+      homeProvider.getAllEvents();
+    }
+
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-     var appLocalizations = AppLocalizations.of(context)!;
+    final categories = HomeProvider.getCategories(context);
 
-    final appLanguageProvider = Provider.of<AppLanguageProvider>(context, listen: false);
+    final appLanguageProvider = Provider.of<AppLanguageProvider>(
+      context,
+      listen: false,
+    );
     final currentLocale = appLanguageProvider.locale;
     final currentMode = appLanguageProvider.themeMode;
-    var themeMode =appLanguageProvider.isDark();
-      final List<Map<String, IconData>> categories = [
-    {'All': Icons.all_out_sharp},
-    {appLocalizations.sports: Icons.directions_bike},
-    {appLocalizations.gaming: Icons.videogame_asset},
-    {appLocalizations.work_shop: Icons.build},
-    {appLocalizations.meeting: Icons.meeting_room},
-    {appLocalizations.holiday: Icons.beach_access},
-    {appLocalizations.birthday: Icons.cake},
-    {appLocalizations.eating: Icons.restaurant},
-    {appLocalizations.book_club: Icons.book},
-    {appLocalizations.exhibition: Icons.museum},
-  ];
-
+    var themeMode = appLanguageProvider.isDark();
 
     return Column(
       children: [
@@ -98,14 +80,14 @@ class _HomeTapState extends State<HomeTap> {
                     children: [
                       GestureDetector(
                         onTap: () {
-
-
                           appLanguageProvider.setThemeMode(
-                            currentMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light,
+                            currentMode == ThemeMode.light
+                                ? ThemeMode.dark
+                                : ThemeMode.light,
                           );
                         },
                         child: SvgPicture.asset(
-                          themeMode ? AppAssets.moonLogo:AppAssets.sunLogo,
+                          themeMode ? AppAssets.moonLogo : AppAssets.sunLogo,
                           width: 35,
                           height: 35,
                         ),
@@ -113,12 +95,9 @@ class _HomeTapState extends State<HomeTap> {
                       SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-
-
                           appLanguageProvider.changeLanguage(
                             currentLocale.languageCode == 'en' ? 'ar' : 'en',
                           );
-
                         },
                         child: Container(
                           padding: EdgeInsets.all(3),
@@ -129,7 +108,7 @@ class _HomeTapState extends State<HomeTap> {
                           ),
 
                           child: Text(
-                            currentLocale.languageCode == "en"? "EN": "AR",
+                            currentLocale.languageCode == "en" ? "EN" : "AR",
                             style: AppTextStyle.bold20primaryLight,
                           ),
                         ),
@@ -157,14 +136,12 @@ class _HomeTapState extends State<HomeTap> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
+                        homeProvider.setSelectedIndex(index, context);
                       },
                       child: TapViewItem(
                         label: categories[index].keys.first,
                         icon: categories[index].values.first,
-                        isSelected: selectedIndex == index,
+                        isSelected: homeProvider.selectedIndex == index,
                       ),
                     );
                   },
@@ -177,25 +154,43 @@ class _HomeTapState extends State<HomeTap> {
         ),
         SizedBox(height: height * 0.02),
         Expanded(
-          child: ListView.separated(
-            padding: EdgeInsets.zero,
-            itemBuilder: (context, index) => Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-              child: GestureDetector(
-                child: EventViewItem(model: ListOfEvents.events[index]),
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoute.eventDetailsRouteName,
-                    arguments: ListOfEvents.events[index],
-                  );
-                },
-              ),
-            ),
-            separatorBuilder: (context, index) =>
-                SizedBox(height: height * 0.02),
-            itemCount: ListOfEvents.events.length,
-          ),
+          child: homeProvider.favoriteEvents.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(AppAssets.emptySvg),
+                      SizedBox(height: height * 0.02),
+                      Text(
+                        "No Event Founded",
+                        style: AppTextStyle.bold20primaryLight.copyWith(
+                          fontSize: 26,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.separated(
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                    child: GestureDetector(
+                      child: EventViewItem(
+                        model: homeProvider.favoriteEvents[index],
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoute.eventDetailsRouteName,
+                          arguments: homeProvider.favoriteEvents[index],
+                        );
+                      },
+                    ),
+                  ),
+                  separatorBuilder: (context, index) =>
+                      SizedBox(height: height * 0.02),
+                  itemCount: homeProvider.favoriteEvents.length,
+                ),
         ),
       ],
     );

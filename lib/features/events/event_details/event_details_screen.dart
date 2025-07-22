@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/app_assets.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_route.dart';
 import '../../../core/utils/app_text_style.dart';
+import '../../home/controller/home_provider.dart';
+import '../model/event_model.dart';
+import 'package:intl/intl.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   const EventDetailsScreen({super.key});
@@ -12,6 +16,8 @@ class EventDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    var model = ModalRoute.of(context)!.settings.arguments as EventModel;
+    var homeProvider = Provider.of<HomeProvider>(context);
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
@@ -39,6 +45,14 @@ class EventDetailsScreen extends StatelessWidget {
             ),
             onPressed: () {
               // Handle delete action
+              homeProvider
+                  .deleteFieldFromDocument(
+                    eventId: model.id,
+                    fieldName: "title",
+                  )
+                  .then((val) {
+                    Navigator.pop(context);
+                  });
             },
           ),
         ],
@@ -52,14 +66,15 @@ class EventDetailsScreen extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
-                  AppAssets.sportsEventLight,
+                  model.imagePath,
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,
                 ),
               ),
               SizedBox(height: 16),
-              Text("We Are Going To Play Football", style: AppTextStyle.bold20primaryLight),
+              Text(model.title, style: AppTextStyle.bold20primaryLight),
+              SizedBox(height: 16),
               Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: width * 0.04,
@@ -92,14 +107,16 @@ class EventDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "21 November 2024 ",
+                          DateFormat(
+                            'dd MMM yyy',
+                          ).format(model.date).toString(),
                           style: AppTextStyle.medium20primaryLight.copyWith(
                             fontSize: 16,
                           ),
                         ),
                         SizedBox(height: 4),
                         Text(
-                          "10:00 AM ",
+                          model.timeOfDay,
                           style: AppTextStyle.medium16Black.copyWith(
                             fontSize: 14,
                           ),
@@ -140,28 +157,26 @@ class EventDetailsScreen extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
-                  
                   ],
                 ),
               ),
-
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: SvgPicture.asset(
-                  "assets/images/Frame 83.svg",
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
+              SizedBox(height: 16),
+              Image.asset(
+                "assets/images/loc.png",
+                width: double.infinity,
+                height: height * 0.38,
+                fit: BoxFit.fill,
               ),
+              SizedBox(height: 16),
 
-              Text("Description ", style: AppTextStyle.bold20Black),
+              SizedBox(height: 16),
+              Text("Description ", style: AppTextStyle.medium16Black),
               SizedBox(height: 8),
               Text(
-                "Lorem ipsum dolor sit amet consectetur. Vulputate eleifend suscipit eget neque senectus a. Nulla at non malesuada odio duis lectus amet nisi sit. Risus hac enim maecenas auctor et. At cras massa diam porta facilisi lacus purus. Iaculis eget quis ut amet. Sit ac malesuada nisi quis  feugiat.",
+                "   ${model.description}",
                 style: AppTextStyle.medium16White.copyWith(color: Colors.grey),
               ),
-       
+              SizedBox(height: 16),
             ],
           ),
         ),

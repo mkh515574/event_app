@@ -32,9 +32,7 @@ class TapViewItem extends StatelessWidget {
     final Color deBorderColor =borderColor ?? ( isSelected
         ? colorScheme.onPrimary: colorScheme.secondaryContainer);
 
-    final Color deTextColor =textColor ??  (isSelected
-        ? colorScheme.onSecondaryContainer
-        : colorScheme.onPrimary);
+
 
     final Color deIconColor = iconColor ?? (isSelected
         ? colorScheme.onSecondaryContainer

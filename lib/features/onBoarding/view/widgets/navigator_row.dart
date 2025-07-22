@@ -56,7 +56,7 @@ class NavigatorRow extends StatelessWidget {
           onPressed: () async {
             if (currentIndex == 2) {
               await completeOnBoarding();
-              Navigator.pushReplacementNamed(context, AppRoute.homeRouteName);
+              Navigator.pushReplacementNamed(context, AppRoute.loginRouteName);
             } else {
               pageController.nextPage(
                 duration: Duration(milliseconds: 300),

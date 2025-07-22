@@ -168,6 +168,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
               ],),),
               SizedBox(height: height * 0.02),
               DateOrTimeViewItem(
+                isEmpty: formattedTime.isEmpty,
+                error: "Please enter event time",
                 label: formattedDate.isEmpty ? "Choose Date" : formattedDate,
                 icon: Icons.calendar_month,
                 title: "Event Date",
@@ -181,6 +183,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                 },
               ),
               DateOrTimeViewItem(
+                isEmpty: formattedTime.isEmpty,
+                error: "Please enter event time",
                 label: formattedTime.isEmpty? "Choose Time" : formattedTime,
                 icon: Icons.access_time,
                 title: "Event Time",
